@@ -189,6 +189,7 @@ a {
 
 .hero-poster {
   position: relative;
+  width: 100%;
   /* Tall enough for the giant title + portrait overlap */
   min-height: 680px;
   overflow: hidden;

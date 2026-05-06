@@ -223,8 +223,8 @@ function Hero() {
 
         {/* Giant editorial title — spans full width, sits behind the portrait */}
         <h1 className="hero-title" aria-label="Code Master">
-          <span>Code</span>
-          <span>Master</span>
+          {/* <span>Web</span> */}
+          <span>Devloper</span>
         </h1>
 
         {/* Portrait — centred, overlaps the title at z-index 2 */}
