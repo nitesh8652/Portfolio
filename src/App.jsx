@@ -1,12 +1,13 @@
 import Lenis from 'lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { ArrowDown, ArrowRight, Check, Github, Linkedin, Mail, Menu, Send, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { owner, projects, skillGroups, skills } from './data/portfolio';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 const navItems = ['About', 'Skills', 'Projects', 'Contact'];
 
@@ -69,7 +70,7 @@ function Preloader() {
       <div className="loader-name-wrap absolute inset-0 z-10 grid place-items-center px-5 text-center">
         <div>
           <p className="loader-kicker mb-5 font-mono text-[0.68rem] uppercase tracking-[0.42em] text-lime md:text-xs">
-            Portfolio / Full-Stack Developer
+            Portfolio
           </p>
           <h1 className="loader-name overflow-hidden font-display text-[clamp(3.2rem,12vw,12rem)] font-bold uppercase leading-[0.82] text-white">
             {name.split('').map((char, index) => (
@@ -151,7 +152,7 @@ function Header() {
     <header className="site-header fixed left-0 top-0 z-50 w-full px-4 pt-4 md:px-6">
       <nav className="nav-shell desktop-nav mx-auto hidden max-w-7xl items-center justify-between gap-4 lg:flex">
         <a href="#home" className="brand-link" data-cursor="OPEN" aria-label={`${owner.name} home`}>
-          <span className="brand-mark">NS</span>
+          <img src="/assets/clibli.png" alt="logo" className="brand-mark " />
           <span className="brand-copy">
             <span>{owner.name}</span>
             <small>Full-Stack Developer</small>
@@ -172,7 +173,7 @@ function Header() {
       <nav className="mobile-nav mx-auto max-w-7xl lg:hidden">
         <div className="mobile-nav-bar">
           <a href="#home" className="brand-link" onClick={closeMenu} data-cursor="OPEN" aria-label={`${owner.name} home`}>
-            <span className="brand-mark">NS</span>
+            <img src="/assets/clibli.png" alt="logo" className="brand-mark brand-fan" />
             <span className="brand-copy">
               <span>{owner.name}</span>
               <small>Portfolio</small>
@@ -236,7 +237,7 @@ function Hero() {
         <div className="hero-copy">
           <p className="hero-status-inline">
             <span className="hero-status-dot" />
-            Available for internships
+            Available for Work
           </p>
           <p>
             What makes my development unique is the combination of technical
@@ -334,11 +335,6 @@ function Skills() {
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// REPLACE your existing Projects() function in src/App.jsx with this one.
-// All imports (useRef, useState, useEffect, gsap, ArrowRight) are already in App.jsx.
-// ─────────────────────────────────────────────────────────────────────────────
-
 const PROJECT_PALETTES = [
   {
     bg: 'linear-gradient(160deg,#0d1b2a 0%,#0a3d2e 55%,#1a6b4a 100%)',
@@ -362,12 +358,12 @@ const PROJECT_PALETTES = [
   },
 ];
 
-function ProjectCard({ project, index, isActive }) {
+function ProjectCard({ project, index }) {
   const palette = PROJECT_PALETTES[index % PROJECT_PALETTES.length];
 
   return (
     <article
-      className={`project-h-card ${isActive ? 'is-active' : ''}`}
+      className="project-h-card"
       data-cursor="VIEW"
       style={{
         '--card-bg': palette.bg,
@@ -446,112 +442,18 @@ function ProjectCard({ project, index, isActive }) {
 }
 
 function Projects() {
-  const sectionRef = useRef(null);
-  const trackRef = useRef(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  // Programmatically jump to a card
-  const scrollToCard = (index) => {
-    const section = sectionRef.current;
-    const track = trackRef.current;
-    if (!section || !track) return;
-    const totalScroll = track.scrollWidth - window.innerWidth;
-    const perCard = totalScroll / (projects.length - 1);
-    window.scrollTo({ top: section.offsetTop + index * perCard, behavior: 'smooth' });
-  };
-
-  useEffect(() => {
-    const track = trackRef.current;
-
-    const ctx = gsap.context(() => {
-      gsap.to(track, {
-        x: () => -(track.scrollWidth - window.innerWidth),
-        ease: 'none',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top top',
-          end: () => `+=${track.scrollWidth - window.innerWidth}`,
-          pin: true,
-          scrub: 1.2,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          onUpdate(self) {
-            setActiveIndex(
-              Math.round(self.progress * (projects.length - 1))
-            );
-          },
-        },
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <section ref={sectionRef} id="projects" className="projects-h-section">
-
-      {/* ── Header (top-left) ── */}
-      <header className="projects-h-header">
-        <p className="projects-h-eyebrow">03 / Projects</p>
-        <h2 className="projects-h-heading">My Works</h2>
-        <p className="projects-h-sub">
-          Witness the craft behind every line — full-stack builds from polished
-          UIs to powerful APIs.
-        </p>
-      </header>
-
-      {/* ── Prev / Next arrow hints ── */}
-      <button
-        className="projects-h-nav projects-h-nav--prev"
-        aria-label="Previous project"
-        onClick={() => scrollToCard(Math.max(0, activeIndex - 1))}
-      >
-        <ArrowRight size={18} style={{ transform: 'rotate(180deg)' }} />
-      </button>
-      <button
-        className="projects-h-nav projects-h-nav--next"
-        aria-label="Next project"
-        onClick={() => scrollToCard(Math.min(projects.length - 1, activeIndex + 1))}
-      >
-        <ArrowRight size={18} />
-      </button>
-
-      {/* ── Horizontal track ── */}
-      <div ref={trackRef} className="projects-h-track">
+    <section id="projects" className="section-pad mx-auto max-w-7xl px-5 md:px-8">
+      <SectionTitle eyebrow="03 / Projects" title="My Works" />
+      <p className="mt-4 text-sm leading-relaxed text-muted">
+        Witness the craft behind every line — full-stack builds from polished UIs to powerful APIs.
+      </p>
+      <div className="projects-grid mt-14">
         {projects.map((project, index) => (
           <ProjectCard
-            key={project.name}
+            key={`${project.name}-${index}`}
             project={project}
             index={index}
-            isActive={index === activeIndex}
-          />
-        ))}
-      </div>
-
-      {/* ── Progress bar ── */}
-      <div className="projects-h-progress">
-        <span className="projects-h-progress-num">
-          {String(activeIndex + 1).padStart(2, '0')}
-        </span>
-        <div className="projects-h-bar">
-          <div
-            className="projects-h-fill"
-            style={{ width: `${((activeIndex + 1) / projects.length) * 100}%` }}
-          />
-        </div>
-        <span className="projects-h-progress-num projects-h-progress-total">
-          {String(projects.length).padStart(2, '0')}
-        </span>
-      </div>
-
-      {/* ── Dot indicators ── */}
-      <div className="projects-h-dots">
-        {projects.map((_, i) => (
-          <button
-            key={i}
-            className={`projects-h-dot ${i === activeIndex ? 'is-active' : ''}`}
-            onClick={() => scrollToCard(i)}
-            aria-label={`Go to project ${i + 1}`}
           />
         ))}
       </div>
@@ -619,19 +521,67 @@ function Contact() {
 
 function Footer() {
   return (
-    <footer className="border-t border-line px-5 py-8 md:px-8">
-      <div className="mx-auto grid max-w-7xl gap-6 text-sm text-muted md:grid-cols-3">
-        <p><span className="text-white">{owner.name}</span> · Built with React + GSAP</p>
-        <div className="flex flex-wrap gap-5 md:justify-center">
-          {navItems.map((item) => <a key={item} href={`#${item.toLowerCase()}`} className="hover:text-lime">{item}</a>)}
+    <footer className="relative overflow-hidden border-t border-white/10 bg-black px-5 py-12 md:px-8">
+
+      {/* Background Glow */}
+      <div className="absolute left-1/2 top-0 h-72 w-72 -translate-x-1/2 rounded-full bg-lime/10 blur-3xl"></div>
+
+      <div className="relative mx-auto max-w-7xl">
+
+        {/* Top Section */}
+        <div className="grid gap-10 md:grid-cols-3 md:items-center">
+
+          {/* Brand */}
+          <div>
+            <h2 className="text-2xl font-bold tracking-tight text-white">
+              {owner.name}
+            </h2>
+
+          </div>
+
+          {/* Navigation */}
+          <div className="flex flex-wrap justify-start gap-4 md:justify-center">
+            {navItems.map((item) => (
+              <a
+                key={item}
+                href={`#${item.toLowerCase()}`}
+                className="group relative text-sm text-muted transition-colors duration-300 hover:text-lime"
+              >
+                {item}
+
+                {/* underline animation */}
+                <span className="absolute -bottom-1 left-0 h-[1px] w-0 bg-lime transition-all duration-300 group-hover:w-full"></span>
+              </a>
+            ))}
+          </div>
+
+          {/* Socials */}
+          <div className="flex gap-4 md:justify-end">
+            {[
+              { name: "GitHub", link: owner.github },
+              { name: "LinkedIn", link: owner.linkedin },
+              { name: "Email", link: `mailto:${owner.email}` },
+            ].map((social) => (
+              <a
+                key={social.name}
+                href={social.link}
+                className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-lime hover:bg-lime hover:text-black"
+              >
+                {social.name}
+              </a>
+            ))}
+          </div>
         </div>
-        <div className="flex gap-5 md:justify-end">
-          <a href={owner.github}>GitHub</a>
-          <a href={owner.linkedin}>LinkedIn</a>
-          <a href={`mailto:${owner.email}`}>Email</a>
+
+        {/* Bottom */}
+        <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 text-xs uppercase tracking-[0.2em] text-muted md:flex-row">
+          <p>© 2026 {owner.name}. All rights reserved.</p>
+
+          <p className="font-mono text-[11px] text-white/50">
+            Designed, Developed & Engineer  with passion.
+          </p>
         </div>
       </div>
-      <p className="mx-auto mt-8 max-w-7xl border-t border-line pt-5 font-mono text-xs uppercase tracking-[0.18em] text-muted">© 2025 - Designed & Developed by {owner.name}</p>
     </footer>
   );
 }
@@ -640,41 +590,32 @@ export default function App() {
   useEffect(() => {
     const lenis = new Lenis({ duration: 1.2, smoothWheel: true });
 
+    // Named function so we can properly remove it later
+    const lenisRaf = (time) => lenis.raf(time * 1000);
+
     lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add(lenisRaf);
+    gsap.ticker.lagSmoothing(0);
 
-    ScrollTrigger.scrollerProxy(document.body, {
-      scrollTop(value) {
-        if (arguments.length) lenis.scrollTo(value, { immediate: true });
-        return lenis.scroll;
-      },
-      getBoundingClientRect() {
-        return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight };
-      },
-    });
-
-    ScrollTrigger.addEventListener('refresh', () => lenis.resize());
     ScrollTrigger.refresh();
 
-    const raf = (time) => {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    };
-    requestAnimationFrame(raf);
-
+    // GSAP scroll animations
     if (document.querySelectorAll('.char').length) {
       gsap.from('.char', { yPercent: 100, opacity: 0, stagger: 0.018, duration: 0.8, ease: 'power3.out', delay: 2 });
     }
     gsap.utils.toArray('.section-heading').forEach((heading) => {
       gsap.fromTo(heading, { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 1, ease: 'power4.out', scrollTrigger: { trigger: heading, start: 'top 78%' } });
     });
-    gsap.utils.toArray('.reveal-lines p, .skill-panel, .project-card, .about-card').forEach((item) => {
+    gsap.utils.toArray('.reveal-lines p, .skill-panel, .project-h-card, .about-card').forEach((item) => {
       gsap.fromTo(item, { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.85, ease: 'power3.out', scrollTrigger: { trigger: item, start: 'top 82%' } });
     });
     gsap.utils.toArray('.skill-tag').forEach((tag, index) => {
       gsap.fromTo(tag, { y: 20, opacity: 0 }, { y: 0, opacity: 1, delay: (index % 4) * 0.04, scrollTrigger: { trigger: tag, start: 'top 92%' } });
     });
 
+    // Single cleanup at the end
     return () => {
+      gsap.ticker.remove(lenisRaf);
       lenis.destroy();
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };

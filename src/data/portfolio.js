@@ -1,8 +1,8 @@
 export const owner = {
   name: 'Nitesh Salian',
-  email: 'your@email.com',
-  github: 'https://github.com/',
-  linkedin: 'https://linkedin.com/in/'
+  email: 'niteshsalian72@gmail.com',
+  github: 'https://github.com/nitesh8652',
+  linkedin: 'https://www.linkedin.com/in/nitesh8652/'
 };
 
 export const skills = [
@@ -74,7 +74,37 @@ export const projects = [
   },
   {
     number: '04',
+    name: 'Saili',
+    tagline: 'Productivity & Task Management App',
+    year: '2025',
+    stack: ['React', 'Node.js', 'Supabase', 'Google Auth'],
+    description:
+      'A productivity app with calendar-based task management, Google authentication, and email reminders with cloud persistence.',
+    highlights: [
+      'Calendar UI with task markers',
+      'Google OAuth via Supabase Auth',
+      'Email reminders using Supabase Edge Functions',
+      'Cloud-first data persistence'
+    ]
+  },
+  {
+    number: '05',
     name: 'Tasker',
+    tagline: 'Productivity & Task Management App',
+    year: '2025',
+    stack: ['React', 'Node.js', 'Supabase', 'Google Auth'],
+    description:
+      'A productivity app with calendar-based task management, Google authentication, and email reminders with cloud persistence.',
+    highlights: [
+      'Calendar UI with task markers',
+      'Google OAuth via Supabase Auth',
+      'Email reminders using Supabase Edge Functions',
+      'Cloud-first data persistence'
+    ]
+  },
+  {
+    number: '06',
+    name: 'Sex',
     tagline: 'Productivity & Task Management App',
     year: '2025',
     stack: ['React', 'Node.js', 'Supabase', 'Google Auth'],
