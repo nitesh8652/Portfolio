@@ -52,7 +52,7 @@ function Preloader() {
         .set(root.current, { pointerEvents: 'none' })
         .to(root.current, { autoAlpha: 0, duration: 0.1 })
         .fromTo(
-          '.hero-reveal',
+          gsap.utils.toArray('.hero-reveal'),
           { y: 60, opacity: 0 },
           { y: 0, opacity: 1, duration: 0.9, stagger: 0.08, ease: 'power3.out' },
           '-=0.28'
@@ -334,65 +334,230 @@ function Skills() {
   );
 }
 
-function Projects() {
+// ─────────────────────────────────────────────────────────────────────────────
+// REPLACE your existing Projects() function in src/App.jsx with this one.
+// All imports (useRef, useState, useEffect, gsap, ArrowRight) are already in App.jsx.
+// ─────────────────────────────────────────────────────────────────────────────
+
+const PROJECT_PALETTES = [
+  {
+    bg: 'linear-gradient(160deg,#0d1b2a 0%,#0a3d2e 55%,#1a6b4a 100%)',
+    accent: '#34d399',
+    pattern: 'radial',
+  },
+  {
+    bg: 'linear-gradient(140deg,#10002b 0%,#240046 50%,#3c096c 100%)',
+    accent: '#c77dff',
+    pattern: 'grid',
+  },
+  {
+    bg: 'linear-gradient(155deg,#03071e 0%,#370617 50%,#6a040f 100%)',
+    accent: '#f48c06',
+    pattern: 'dots',
+  },
+  {
+    bg: 'linear-gradient(145deg,#001219 0%,#005f73 55%,#0a9396 100%)',
+    accent: '#94d2bd',
+    pattern: 'lines',
+  },
+];
+
+function ProjectCard({ project, index, isActive }) {
+  const palette = PROJECT_PALETTES[index % PROJECT_PALETTES.length];
+
   return (
-    <section id="projects" className="section-pad mx-auto max-w-7xl px-5 md:px-8">
-      <SectionTitle eyebrow="03 / Projects" title="Selected Work" />
-      <div className="mt-14 space-y-8 lg:space-y-20">
-        {projects.map((project) => (
-          <article key={project.name} className="project-card grid min-h-[78vh] gap-8 border border-line bg-surface p-5 md:p-8 lg:grid-cols-[1.05fr_0.95fr]" data-cursor="VIEW">
-            <div className="flex flex-col justify-between gap-12">
-              <div>
-                <div className="flex flex-wrap items-start justify-between gap-5">
-                  <span className="font-mono text-sm text-lime">[{project.number}]</span>
-                  <div className="flex flex-wrap gap-2">
-                    {project.stack.map((tag) => <span className="project-tag" key={tag}>{tag}</span>)}
-                  </div>
-                </div>
-                <div className="mt-12 flex flex-wrap items-end justify-between gap-4 border-b border-line pb-8">
-                  <div>
-                    <p className="font-mono text-xs uppercase tracking-[0.26em] text-muted">{project.tagline}</p>
-                    <h3 className="mt-3 font-display text-[clamp(2.6rem,7vw,7rem)] font-bold uppercase leading-none text-white">{project.name}</h3>
-                  </div>
-                  <span className="font-mono text-sm text-muted">{project.year}</span>
-                </div>
-                <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted">{project.description}</p>
-                <ul className="mt-8 grid gap-3 text-white/90">
-                  {project.highlights.map((highlight) => <li key={highlight} className="flex gap-3"><span className="mt-2 h-1.5 w-1.5 shrink-0 bg-lime" />{highlight}</li>)}
-                </ul>
-              </div>
-              <div className="flex gap-3">
-                <a className="btn-primary" href="#" data-cursor="OPEN">Live Demo <ArrowRight size={18} /></a>
-                <a className="btn-secondary" href="#" data-cursor="OPEN">GitHub</a>
-              </div>
+    <article
+      className={`project-h-card ${isActive ? 'is-active' : ''}`}
+      data-cursor="VIEW"
+      style={{
+        '--card-bg': palette.bg,
+        '--card-accent': palette.accent,
+      }}
+    >
+      {/* ── Visual background ── */}
+      <div className="project-h-visual">
+        <div className="project-h-visual-bg" />
+
+        {/* Decorative pattern overlay */}
+        {palette.pattern === 'radial' && (
+          <svg className="project-h-pattern" viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <circle key={i} cx="200" cy="300" r={i * 70} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
+            ))}
+            <circle cx="200" cy="300" r="40" fill={`${palette.accent}22`} />
+          </svg>
+        )}
+        {palette.pattern === 'grid' && (
+          <svg className="project-h-pattern" viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <pattern id={`grid-${index}`} width="40" height="40" patternUnits="userSpaceOnUse">
+                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth="0.5" />
+              </pattern>
+            </defs>
+            <rect width="400" height="600" fill={`url(#grid-${index})`} />
+            <rect x="120" y="200" width="160" height="160" fill="none" stroke={`${palette.accent}40`} strokeWidth="1" transform="rotate(45 200 280)" />
+          </svg>
+        )}
+        {palette.pattern === 'dots' && (
+          <svg className="project-h-pattern" viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <pattern id={`dots-${index}`} width="24" height="24" patternUnits="userSpaceOnUse">
+                <circle cx="2" cy="2" r="1" fill="rgba(255,255,255,0.1)" />
+              </pattern>
+            </defs>
+            <rect width="400" height="600" fill={`url(#dots-${index})`} />
+            <polygon points="200,140 310,340 90,340" fill="none" stroke={`${palette.accent}35`} strokeWidth="1" />
+          </svg>
+        )}
+        {palette.pattern === 'lines' && (
+          <svg className="project-h-pattern" viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice">
+            {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
+              <line key={i} x1="0" y1={i * 80} x2="400" y2={i * 80 + 100} stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
+            ))}
+            <rect x="80" y="220" width="240" height="120" rx="4" fill={`${palette.accent}18`} stroke={`${palette.accent}40`} strokeWidth="1" />
+          </svg>
+        )}
+
+        {/* Floating number */}
+        <span className="project-h-num">{project.number}</span>
+      </div>
+
+      {/* ── Content overlay (slides up on active) ── */}
+      <div className="project-h-overlay">
+        <div className="project-h-overlay-inner">
+          <p className="project-h-tagline">{project.tagline}</p>
+          <h3 className="project-h-title">{project.name}</h3>
+          <p className="project-h-desc">{project.description.slice(0, 105)}…</p>
+
+          <div className="project-h-footer">
+            <div className="project-h-tags">
+              {project.stack.slice(0, 2).map((tag) => (
+                <span key={tag} className="project-h-tag">{tag}</span>
+              ))}
             </div>
-            <div className="mockup relative overflow-hidden border border-line bg-ink p-4">
-              <div className="mb-4 flex gap-2">{['', '', ''].map((_, i) => <span key={i} className="h-2.5 w-2.5 rounded-full bg-white/20" />)}</div>
-              <div className="grid h-[calc(100%-2rem)] grid-rows-[0.8fr_1fr] gap-4">
-                <div className="bg-lime p-5 text-ink">
-                  <p className="font-mono text-xs uppercase">Project / {project.number}</p>
-                  <p className="mt-8 font-display text-5xl font-bold uppercase">{project.name}</p>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="border border-line bg-surface p-4">
-                    <div className="h-2 w-3/4 bg-white/30" />
-                    <div className="mt-4 h-24 bg-white/10" />
-                  </div>
-                  <div className="space-y-3 border border-line bg-surface p-4">
-                    <div className="h-2 bg-lime/70" />
-                    <div className="h-2 w-2/3 bg-white/20" />
-                    <div className="h-2 w-5/6 bg-white/20" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </article>
+            <a href="#" className="project-h-cta" data-cursor="OPEN">
+              <ArrowRight size={15} />
+            </a>
+          </div>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function Projects() {
+  const sectionRef = useRef(null);
+  const trackRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  // Programmatically jump to a card
+  const scrollToCard = (index) => {
+    const section = sectionRef.current;
+    const track = trackRef.current;
+    if (!section || !track) return;
+    const totalScroll = track.scrollWidth - window.innerWidth;
+    const perCard = totalScroll / (projects.length - 1);
+    window.scrollTo({ top: section.offsetTop + index * perCard, behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    const track = trackRef.current;
+
+    const ctx = gsap.context(() => {
+      gsap.to(track, {
+        x: () => -(track.scrollWidth - window.innerWidth),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top top',
+          end: () => `+=${track.scrollWidth - window.innerWidth}`,
+          pin: true,
+          scrub: 1.2,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          onUpdate(self) {
+            setActiveIndex(
+              Math.round(self.progress * (projects.length - 1))
+            );
+          },
+        },
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <section ref={sectionRef} id="projects" className="projects-h-section">
+
+      {/* ── Header (top-left) ── */}
+      <header className="projects-h-header">
+        <p className="projects-h-eyebrow">03 / Projects</p>
+        <h2 className="projects-h-heading">My Works</h2>
+        <p className="projects-h-sub">
+          Witness the craft behind every line — full-stack builds from polished
+          UIs to powerful APIs.
+        </p>
+      </header>
+
+      {/* ── Prev / Next arrow hints ── */}
+      <button
+        className="projects-h-nav projects-h-nav--prev"
+        aria-label="Previous project"
+        onClick={() => scrollToCard(Math.max(0, activeIndex - 1))}
+      >
+        <ArrowRight size={18} style={{ transform: 'rotate(180deg)' }} />
+      </button>
+      <button
+        className="projects-h-nav projects-h-nav--next"
+        aria-label="Next project"
+        onClick={() => scrollToCard(Math.min(projects.length - 1, activeIndex + 1))}
+      >
+        <ArrowRight size={18} />
+      </button>
+
+      {/* ── Horizontal track ── */}
+      <div ref={trackRef} className="projects-h-track">
+        {projects.map((project, index) => (
+          <ProjectCard
+            key={project.name}
+            project={project}
+            index={index}
+            isActive={index === activeIndex}
+          />
+        ))}
+      </div>
+
+      {/* ── Progress bar ── */}
+      <div className="projects-h-progress">
+        <span className="projects-h-progress-num">
+          {String(activeIndex + 1).padStart(2, '0')}
+        </span>
+        <div className="projects-h-bar">
+          <div
+            className="projects-h-fill"
+            style={{ width: `${((activeIndex + 1) / projects.length) * 100}%` }}
+          />
+        </div>
+        <span className="projects-h-progress-num projects-h-progress-total">
+          {String(projects.length).padStart(2, '0')}
+        </span>
+      </div>
+
+      {/* ── Dot indicators ── */}
+      <div className="projects-h-dots">
+        {projects.map((_, i) => (
+          <button
+            key={i}
+            className={`projects-h-dot ${i === activeIndex ? 'is-active' : ''}`}
+            onClick={() => scrollToCard(i)}
+            aria-label={`Go to project ${i + 1}`}
+          />
         ))}
       </div>
     </section>
   );
 }
-
 function Contact() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
   const [status, setStatus] = useState('idle');
@@ -477,13 +642,28 @@ export default function App() {
 
     lenis.on('scroll', ScrollTrigger.update);
 
+    ScrollTrigger.scrollerProxy(document.body, {
+      scrollTop(value) {
+        if (arguments.length) lenis.scrollTo(value, { immediate: true });
+        return lenis.scroll;
+      },
+      getBoundingClientRect() {
+        return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight };
+      },
+    });
+
+    ScrollTrigger.addEventListener('refresh', () => lenis.resize());
+    ScrollTrigger.refresh();
+
     const raf = (time) => {
       lenis.raf(time);
       requestAnimationFrame(raf);
     };
     requestAnimationFrame(raf);
 
-    gsap.from('.char', { yPercent: 100, opacity: 0, stagger: 0.018, duration: 0.8, ease: 'power3.out', delay: 2 });
+    if (document.querySelectorAll('.char').length) {
+      gsap.from('.char', { yPercent: 100, opacity: 0, stagger: 0.018, duration: 0.8, ease: 'power3.out', delay: 2 });
+    }
     gsap.utils.toArray('.section-heading').forEach((heading) => {
       gsap.fromTo(heading, { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 1, ease: 'power4.out', scrollTrigger: { trigger: heading, start: 'top 78%' } });
     });
