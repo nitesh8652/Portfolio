@@ -178,6 +178,10 @@ a {
   transform: translateY(-2px);
 }
 
+/* =============================================
+   HERO — Editorial "Snap Master" layout
+   ============================================= */
+
 .hero-section {
   display: grid;
   align-items: center;
@@ -185,7 +189,8 @@ a {
 
 .hero-poster {
   position: relative;
-  min-height: 640px;
+  /* Tall enough for the giant title + portrait overlap */
+  min-height: 680px;
   overflow: hidden;
   border: 10px solid #10200d;
   border-radius: 44px;
@@ -198,140 +203,137 @@ a {
   box-shadow: 0 34px 90px rgba(0, 0, 0, 0.48);
 }
 
+/* Subtle watermark text behind everything */
 .hero-poster::before {
   position: absolute;
   inset: -12% -6%;
-  z-index: -1;
+  z-index: 0;
   content: "FULL STACK FULL STACK";
-  color: rgba(255, 255, 255, 0.18);
+  color: rgba(16, 32, 13, 0.07);
   font-family: "Clash Display", Arial, sans-serif;
   font-size: 9rem;
   font-weight: 700;
   line-height: 0.82;
   text-transform: uppercase;
   word-spacing: 2rem;
+  pointer-events: none;
 }
 
 .hero-grid {
   position: absolute;
   inset: 0;
-  z-index: -1;
+  z-index: 0;
   background-image:
-    linear-gradient(rgba(16, 32, 13, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(16, 32, 13, 0.08) 1px, transparent 1px),
-    linear-gradient(28deg, transparent 49.5%, rgba(16, 32, 13, 0.22) 50%, transparent 50.5%),
-    linear-gradient(-18deg, transparent 49.5%, rgba(255, 255, 255, 0.24) 50%, transparent 50.5%);
+    linear-gradient(rgba(16, 32, 13, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16, 32, 13, 0.06) 1px, transparent 1px),
+    linear-gradient(28deg, transparent 49.5%, rgba(16, 32, 13, 0.14) 50%, transparent 50.5%),
+    linear-gradient(-18deg, transparent 49.5%, rgba(255, 255, 255, 0.18) 50%, transparent 50.5%);
   background-size: 84px 84px, 84px 84px, 360px 360px;
   opacity: 0.75;
+  pointer-events: none;
 }
 
-.hero-status,
-.hero-role,
-.hero-copy,
-.hero-note,
-.hero-actions {
-  position: absolute;
-  z-index: 3;
-}
-
-.hero-status {
-  left: 2rem;
-  top: 2rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  border: 1px solid rgba(16, 32, 13, 0.18);
-  background: rgba(255, 255, 255, 0.22);
-  padding: 0.72rem 0.9rem;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 0.68rem;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.hero-status span {
-  width: 0.55rem;
-  height: 0.55rem;
-  border-radius: 999px;
-  background: #10200d;
-}
-
+/* ── Giant editorial title ── */
 .hero-title {
   position: absolute;
-  left: 1rem;
-  right: 1rem;
-  top: 0.65rem;
+  left: 0;
+  right: 0;
+  top: 0;
   z-index: 1;
+  /* Two words pushed to opposite edges — "SNAP … MASTER" editorial look */
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0.4rem 1.2rem 0;
   color: #10200d;
   font-family: "Clash Display", Arial, sans-serif;
-  font-size: clamp(5.2rem, 15vw, 11.8rem);
+  font-size: clamp(5rem, 17vw, 13.5rem);
   font-weight: 700;
-  letter-spacing: 0;
-  line-height: 0.74;
+  letter-spacing: -0.02em;
+  line-height: 0.82;
   text-transform: uppercase;
   white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
 }
 
 .hero-title span {
-  display: inline;
+  display: inline-block;
 }
 
-.hero-role {
-  right: 2rem;
-  top: 12rem;
-  border: 1px solid rgba(16, 32, 13, 0.2);
-  background: #10200d;
-  padding: 0.75rem 1rem;
-  color: #c8ff00;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 0.72rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
+/* ── Centred portrait sits over title ── */
 .hero-portrait {
   position: absolute;
   left: 50%;
-  bottom: -8px;
+  bottom: 0;
   z-index: 2;
-  width: min(31rem, 42%);
+  width: min(34rem, 50%);
   transform: translateX(-50%);
 }
 
 .hero-portrait img {
   display: block;
   width: 100%;
+  height: auto;
   aspect-ratio: auto;
   object-fit: contain;
-  object-position: center top;
-  filter: drop-shadow(0 22px 34px rgba(16, 32, 13, 0.26)) saturate(1.03) contrast(1.03);
+  object-position: center bottom;
+  filter: drop-shadow(0 22px 34px rgba(16, 32, 13, 0.28)) saturate(1.03) contrast(1.03);
 }
 
+/* ── Bottom-left: availability pill + description + socials ── */
 .hero-copy {
+  position: absolute;
   left: 2rem;
-  top: 17.2rem;
-  bottom: auto;
-  width: min(17rem, 28%);
+  bottom: 2.5rem;
+  top: auto;
+  z-index: 3;
+  width: min(16rem, 22%);
+  display: grid;
+  gap: 0.6rem;
 }
 
 .hero-copy p,
 .hero-note p {
   margin: 0;
   color: #10200d;
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   font-weight: 600;
-  line-height: 1.28;
+  line-height: 1.35;
+}
+
+/* Inline availability badge inside hero-copy */
+.hero-status-inline {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid rgba(16, 32, 13, 0.2);
+  background: rgba(255, 255, 255, 0.32);
+  padding: 0.45rem 0.75rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.62rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  width: fit-content;
+  line-height: 1 !important;
+}
+
+.hero-status-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: #10200d;
+  flex-shrink: 0;
 }
 
 .hero-socials {
   display: flex;
   gap: 0.45rem;
-  margin-top: 1rem;
+  margin-top: 0.25rem;
 }
 
-.hero-socials a,
-.hero-note button {
+.hero-socials a {
   display: inline-flex;
   width: 34px;
   min-height: 34px;
@@ -344,63 +346,56 @@ a {
   transition: transform 180ms ease, background 180ms ease, color 180ms ease;
 }
 
-.hero-socials a:hover,
+.hero-socials a:hover {
+  background: #fff;
+  color: #10200d;
+  transform: translateY(-2px);
+}
+
+/* ── Bottom-right: tagline + scroll arrow ── */
+.hero-note {
+  position: absolute;
+  right: 2rem;
+  bottom: 2.5rem;
+  z-index: 3;
+  display: grid;
+  max-width: 16rem;
+  justify-items: end;
+  gap: 1rem;
+  text-align: right;
+}
+
+.hero-note button {
+  display: inline-flex;
+  width: 40px;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(16, 32, 13, 0.24);
+  border-radius: 999px;
+  background: #10200d;
+  color: #c8ff00;
+  transition: transform 180ms ease, background 180ms ease, color 180ms ease;
+}
+
 .hero-note button:hover {
   background: #fff;
   color: #10200d;
   transform: translateY(-2px);
 }
 
-.hero-note {
-  right: 2rem;
-  bottom: 5.7rem;
-  display: grid;
-  max-width: 18rem;
-  justify-items: end;
-  gap: 1rem;
-  text-align: right;
-}
-
-.hero-actions {
-  left: 2rem;
-  right: auto;
-  bottom: 1.7rem;
-  display: flex;
-  justify-content: flex-start;
-  gap: 1rem;
-}
-
+/* ── Keep legacy classes harmless (no JSX referencing them) ── */
+.hero-status,
+.hero-role,
+.hero-actions,
 .hero-action-primary,
 .hero-action-secondary {
-  display: inline-flex;
-  min-height: 46px;
-  align-items: center;
-  justify-content: center;
-  gap: 0.55rem;
-  border: 1px solid #10200d;
-  padding: 0 1rem;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  transition: transform 180ms ease, background 180ms ease, color 180ms ease;
+  display: none;
 }
 
-.hero-action-primary {
-  background: #10200d;
-  color: #c8ff00;
-}
-
-.hero-action-secondary {
-  background: rgba(255, 255, 255, 0.2);
-  color: #10200d;
-}
-
-.hero-action-primary:hover,
-.hero-action-secondary:hover {
-  transform: translateY(-2px);
-}
+/* =============================================
+   END HERO
+   ============================================= */
 
 .mobile-nav {
   display: grid;
@@ -725,6 +720,7 @@ a {
   to { transform: rotate(360deg); }
 }
 
+/* ── Touch / mobile: restore cursor ── */
 @media (pointer: coarse), (max-width: 767px) {
   body,
   button,
@@ -738,23 +734,21 @@ a {
   }
 }
 
+/* ── Wide screens: lower hero-role (legacy, hidden) ── */
 @media (min-width: 1180px) {
   .hero-role {
     top: 13.3rem;
   }
 }
 
+/* ── Medium: tighten portrait + title ── */
 @media (max-width: 980px) {
   .hero-poster {
-    min-height: 620px;
+    min-height: 600px;
   }
 
   .hero-title {
-    font-size: clamp(4.1rem, 14vw, 8.2rem);
-  }
-
-  .hero-role {
-    top: 9.8rem;
+    font-size: clamp(4rem, 14vw, 10rem);
   }
 
   .hero-portrait {
@@ -762,11 +756,15 @@ a {
   }
 
   .hero-copy {
-    width: 17rem;
-    top: 14rem;
+    width: min(14rem, 26%);
+  }
+
+  .hero-note {
+    max-width: 14rem;
   }
 }
 
+/* ── Tablet / mobile: stack layout ── */
 @media (max-width: 760px) {
   .hero-section {
     padding-top: 9.5rem;
@@ -785,13 +783,11 @@ a {
     line-height: 0.9;
   }
 
-  .hero-status,
+  /* Reset absolute positioning — let the grid stack naturally */
   .hero-title,
-  .hero-role,
   .hero-portrait,
   .hero-copy,
-  .hero-note,
-  .hero-actions {
+  .hero-note {
     position: relative;
     inset: auto;
     width: auto;
@@ -799,22 +795,20 @@ a {
     transform: none;
   }
 
-  .hero-status {
-    justify-self: start;
-  }
-
+  /* Title: column flex so each word stacks */
   .hero-title {
-    font-size: clamp(3.05rem, 15vw, 6rem);
-    line-height: 0.78;
-    white-space: normal;
+    font-size: clamp(3.2rem, 15vw, 6.5rem);
+    line-height: 0.82;
+    padding: 0.25rem 0.5rem 0;
+    flex-direction: column;
+    gap: 0;
+    justify-content: flex-start;
+    pointer-events: auto;
+    user-select: auto;
   }
 
   .hero-title span {
     display: block;
-  }
-
-  .hero-role {
-    justify-self: start;
   }
 
   .hero-portrait {
@@ -825,25 +819,20 @@ a {
 
   .hero-copy {
     display: grid;
-    gap: 0.9rem;
+    gap: 0.75rem;
   }
 
-  .hero-socials {
-    margin-top: 0;
+  .hero-status-inline {
+    justify-self: start;
   }
 
   .hero-note {
     justify-items: start;
     text-align: left;
   }
-
-  .hero-actions {
-    display: grid;
-    grid-template-columns: 1fr;
-    right: auto;
-  }
 }
 
+/* ── Small phones ── */
 @media (max-width: 640px) {
   .site-header {
     padding-top: 0.75rem;
@@ -864,12 +853,12 @@ a {
   }
 
   .hero-title {
-    font-size: 3.6rem;
+    font-size: 3.4rem;
   }
 
   .hero-copy p,
   .hero-note p {
-    font-size: 0.86rem;
+    font-size: 0.84rem;
   }
 
   .project-card {

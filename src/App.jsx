@@ -220,21 +220,27 @@ function Hero() {
     <section id="home" className="hero-section relative min-h-screen overflow-hidden px-4 pb-8 pt-28 md:px-6 lg:pt-32">
       <div className="hero-poster hero-reveal mx-auto max-w-7xl">
         <div className="hero-grid" aria-hidden="true" />
-        <p className="hero-status">
-          <span />
-          Available for internships
-        </p>
-        <h1 className="hero-title">
+
+        {/* Giant editorial title — spans full width, sits behind the portrait */}
+        <h1 className="hero-title" aria-label="Code Master">
           <span>Code</span>
           <span>Master</span>
         </h1>
-        <p className="hero-role">Full-stack developer</p>
+
+        {/* Portrait — centred, overlaps the title at z-index 2 */}
         <div className="hero-portrait">
           <img src="/assets/nobg.png" alt="Nitesh Salian" />
         </div>
+
+        {/* Bottom-left: availability pill + short description + social icons */}
         <div className="hero-copy">
+          <p className="hero-status-inline">
+            <span className="hero-status-dot" />
+            Available for internships
+          </p>
           <p>
-            I build practical MERN applications with clean React interfaces, Node APIs, and database-backed product flows.
+            What makes my development unique is the combination of technical
+            precision and a user-first touch.
           </p>
           <div className="hero-socials" aria-label="Social links">
             <a href={owner.github} aria-label="GitHub" data-cursor="OPEN"><Github size={16} /></a>
@@ -242,17 +248,15 @@ function Hero() {
             <a href={`mailto:${owner.email}`} aria-label="Email" data-cursor="OPEN"><Mail size={16} /></a>
           </div>
         </div>
+
+        {/* Bottom-right: tagline + scroll-down arrow */}
         <div className="hero-note">
-          <p>B.Sc. IT Student / React / Node.js / MongoDB</p>
+          <p>
+            Immerse yourself in full-stack solutions where every commit tells a story — from polished React UIs to powerful Node.js APIs.
+          </p>
           <button onClick={() => scrollToHash('#projects')} aria-label="View projects" data-cursor="VIEW">
             <ArrowDown size={18} />
           </button>
-        </div>
-        <div className="hero-actions">
-          <button className="hero-action-primary" onClick={() => scrollToHash('#projects')} data-cursor="VIEW">
-            View Work <ArrowRight size={17} />
-          </button>
-          <a className="hero-action-secondary" href="/cv.pdf" download data-cursor="OPEN">Download CV</a>
         </div>
       </div>
     </section>
@@ -421,7 +425,6 @@ function Contact() {
     <section id="contact" className="section-pad mx-auto grid max-w-7xl gap-12 px-5 md:px-8 lg:grid-cols-[0.85fr_1fr]">
       <div>
         <SectionTitle eyebrow="04 / Contact" title="Let's Build Something." />
-        {/* <p className="mt-8 max-w-xl text-xl text-muted">Open to internships, freelance work, and collaborations.</p> */}
         <a href={`mailto:${owner.email}`} onClick={copyEmail} className="mt-8 inline-flex text-2xl text-white underline decoration-lime underline-offset-8" data-cursor="OPEN">{owner.email}</a>
         <div className="mt-8 flex gap-3">
           <a className="icon-link" href={owner.github} aria-label="GitHub" data-cursor="OPEN"><Github size={20} /></a>
