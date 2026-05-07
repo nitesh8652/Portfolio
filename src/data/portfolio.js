@@ -18,7 +18,7 @@ export const skills = [
   'REST APIs',
   'JWT',
   'Postman',
-  
+
 ];
 
 export const skillGroups = [
@@ -26,7 +26,7 @@ export const skillGroups = [
   { title: 'Backend', items: ['Node.js', 'Express.js', 'REST APIs', 'JWT Auth'] },
   { title: 'Database & Cloud', items: ['MongoDB Atlas', 'SQL', 'Supabase', 'Cloudinary'] },
   { title: 'Languages', items: ['JavaScript', 'Python'] },
-  { title: 'Tools', items: ['Git & GitHub', 'Postman', 'Render', 'Senitry', 'Cloudinary', 'Clerk','VS Code'] }
+  { title: 'Tools', items: ['Git & GitHub', 'Postman', 'Render', 'Senitry', 'Cloudinary', 'Clerk', 'VS Code'] }
 ];
 
 export const projects = [
@@ -35,6 +35,9 @@ export const projects = [
     name: 'ClipSync',
     tagline: 'Media Sharing Platform',
     year: '2025',
+    image: '/assets/clipsync.png',
+    docs: '#',
+    live: '#',
     stack: ['React', 'Node.js', 'MongoDB', 'Cloudinary'],
     description:
       'A full-stack application for uploading, managing, and sharing media clips with user-based authorization, secure deletion logic, and cloud media storage.',
@@ -46,24 +49,13 @@ export const projects = [
   },
   {
     number: '02',
-    name: 'URL Shortener',
-    tagline: 'Link Management Service',
-    year: '2025',
-    stack: ['React', 'Node.js', 'Express', 'MongoDB', 'Render'],
-    description:
-      'A clean URL shortening service with unique link generation, click tracking, and persistent storage.',
-    highlights: [
-      'Unique short code generation algorithm',
-      'MongoDB for URL mapping storage',
-      'Full-stack deployment on Render'
-    ]
-  },
-  {
-    number: '03',
     name: 'JobEase',
     tagline: 'Job Portal + Resume Builder',
     year: '2025',
-    stack: ['React', 'Node.js', 'Express', 'MongoDB'],
+    image: '/assets/jobease.png',
+    docs: '#',
+    live: '#',
+    stack: ['React', 'Node.js', 'Express', 'MongoDB', 'Render'],
     description:
       'A full MERN job portal with dual dashboards for recruiters and job seekers, plus an integrated resume builder.',
     highlights: [
@@ -74,10 +66,31 @@ export const projects = [
     ]
   },
   {
+  number: '03',
+  name: 'Landit.AI',
+  tagline: 'AI-Powered Resume & Career Platform',
+  year: '2025',
+    image: '/assets/landit.png',
+  docs: '#',
+  live: '#',
+  stack: ['React', 'Node.js', 'Express', 'MongoDB', 'AI Integration'],
+  description:
+    'An AI-powered resume builder and career platform that helps users create professional resumes, optimize content, and manage job applications with a modern and interactive interface.',
+  highlights: [
+    'AI-generated resume content and suggestions',
+    'Modern responsive dashboard for job seekers',
+    'Dynamic resume customization and templates',
+    'Secure authentication and user data management',
+    'Full-stack MERN architecture with scalable backend'
+  ]
+},
+  {
     number: '04',
-    name: 'Saili',
+    name: 'dMN',
     tagline: 'Productivity & Task Management App',
     year: '2025',
+    docs: '#',
+    live: '#',
     stack: ['React', 'Node.js', 'Supabase', 'Google Auth'],
     description:
       'A productivity app with calendar-based task management, Google authentication, and email reminders with cloud persistence.',
@@ -88,34 +101,20 @@ export const projects = [
       'Cloud-first data persistence'
     ]
   },
-  {
-    number: '05',
-    name: 'Tasker',
-    tagline: 'Productivity & Task Management App',
-    year: '2025',
-    stack: ['React', 'Node.js', 'Supabase', 'Google Auth'],
-    description:
-      'A productivity app with calendar-based task management, Google authentication, and email reminders with cloud persistence.',
-    highlights: [
-      'Calendar UI with task markers',
-      'Google OAuth via Supabase Auth',
-      'Email reminders using Supabase Edge Functions',
-      'Cloud-first data persistence'
-    ]
-  },
-  {
-    number: '06',
-    name: 'Sex',
-    tagline: 'Productivity & Task Management App',
-    year: '2025',
-    stack: ['React', 'Node.js', 'Supabase', 'Google Auth'],
-    description:
-      'A productivity app with calendar-based task management, Google authentication, and email reminders with cloud persistence.',
-    highlights: [
-      'Calendar UI with task markers',
-      'Google OAuth via Supabase Auth',
-      'Email reminders using Supabase Edge Functions',
-      'Cloud-first data persistence'
-    ]
-  }
+  // {
+  //   number: '05',
+  //   name: 'Tasker',
+  //   tagline: 'Productivity & Task Management App',
+  //   year: '2025',
+  //   stack: ['React', 'Node.js', 'Supabase', 'Google Auth'],
+  //   description:
+  //     'A productivity app with calendar-based task management, Google authentication, and email reminders with cloud persistence.',
+  //   highlights: [
+  //     'Calendar UI with task markers',
+  //     'Google OAuth via Supabase Auth',
+  //     'Email reminders using Supabase Edge Functions',
+  //     'Cloud-first data persistence'
+  //   ]
+  // },
+
 ];

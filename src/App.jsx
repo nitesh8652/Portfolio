@@ -429,47 +429,63 @@ function ProjectCard({ project, index }) {
     >
       <div className="project-h-visual">
         <div className="project-h-visual-bg" />
+        <span style={{
+          position: 'absolute', top: '1rem', left: '1.2rem', zIndex: 3,
+          fontFamily: '"Clash Display", Arial, sans-serif',
+          fontSize: '3.5rem', fontWeight: 700, color: 'var(--card-accent)',
+          textShadow: '0 0 8px rgba(0,0,0,0.9), 0 2px 12px rgba(0,0,0,0.8), 0 0 2px rgba(0,0,0,1)',
+          letterSpacing: '0.04em', pointerEvents: 'none'
+        }}>{project.number}</span>
 
-        {palette.pattern === 'radial' && (
-          <svg className="project-h-pattern" viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice">
-            {[1, 2, 3, 4, 5].map((i) => (
-              <circle key={i} cx="200" cy="300" r={i * 70} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
-            ))}
-            <circle cx="200" cy="300" r="40" fill={`${palette.accent}22`} />
-          </svg>
+        {project.image ? (
+          <img
+            src={project.image}
+            alt={project.name}
+            className="project-h-pattern object-cover w-full h-full"
+          />
+        ) : (
+          <>
+            {palette.pattern === 'radial' && (
+              <svg className="project-h-pattern" viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <circle key={i} cx="200" cy="300" r={i * 70} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
+                ))}
+                <circle cx="200" cy="300" r="40" fill={`${palette.accent}22`} />
+              </svg>
+            )}
+            {palette.pattern === 'grid' && (
+              <svg className="project-h-pattern" viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice">
+                <defs>
+                  <pattern id={`grid-${index}`} width="40" height="40" patternUnits="userSpaceOnUse">
+                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth="0.5" />
+                  </pattern>
+                </defs>
+                <rect width="400" height="600" fill={`url(#grid-${index})`} />
+                <rect x="120" y="200" width="160" height="160" fill="none" stroke={`${palette.accent}40`} strokeWidth="1" transform="rotate(45 200 280)" />
+              </svg>
+            )}
+            {palette.pattern === 'dots' && (
+              <svg className="project-h-pattern" viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice">
+                <defs>
+                  <pattern id={`dots-${index}`} width="24" height="24" patternUnits="userSpaceOnUse">
+                    <circle cx="2" cy="2" r="1" fill="rgba(255,255,255,0.1)" />
+                  </pattern>
+                </defs>
+                <rect width="400" height="600" fill={`url(#dots-${index})`} />
+                <polygon points="200,140 310,340 90,340" fill="none" stroke={`${palette.accent}35`} strokeWidth="1" />
+              </svg>
+            )}
+            {palette.pattern === 'lines' && (
+              <svg className="project-h-pattern" viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice">
+                {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
+                  <line key={i} x1="0" y1={i * 80} x2="400" y2={i * 80 + 100} stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
+                ))}
+                <rect x="80" y="220" width="240" height="120" rx="4" fill={`${palette.accent}18`} stroke={`${palette.accent}40`} strokeWidth="1" />
+              </svg>
+            )}
+            <span className="project-h-num">{project.number}</span>
+          </>
         )}
-        {palette.pattern === 'grid' && (
-          <svg className="project-h-pattern" viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice">
-            <defs>
-              <pattern id={`grid-${index}`} width="40" height="40" patternUnits="userSpaceOnUse">
-                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth="0.5" />
-              </pattern>
-            </defs>
-            <rect width="400" height="600" fill={`url(#grid-${index})`} />
-            <rect x="120" y="200" width="160" height="160" fill="none" stroke={`${palette.accent}40`} strokeWidth="1" transform="rotate(45 200 280)" />
-          </svg>
-        )}
-        {palette.pattern === 'dots' && (
-          <svg className="project-h-pattern" viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice">
-            <defs>
-              <pattern id={`dots-${index}`} width="24" height="24" patternUnits="userSpaceOnUse">
-                <circle cx="2" cy="2" r="1" fill="rgba(255,255,255,0.1)" />
-              </pattern>
-            </defs>
-            <rect width="400" height="600" fill={`url(#dots-${index})`} />
-            <polygon points="200,140 310,340 90,340" fill="none" stroke={`${palette.accent}35`} strokeWidth="1" />
-          </svg>
-        )}
-        {palette.pattern === 'lines' && (
-          <svg className="project-h-pattern" viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice">
-            {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
-              <line key={i} x1="0" y1={i * 80} x2="400" y2={i * 80 + 100} stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
-            ))}
-            <rect x="80" y="220" width="240" height="120" rx="4" fill={`${palette.accent}18`} stroke={`${palette.accent}40`} strokeWidth="1" />
-          </svg>
-        )}
-
-        <span className="project-h-num">{project.number}</span>
       </div>
 
       <div className="project-h-overlay">
@@ -478,15 +494,19 @@ function ProjectCard({ project, index }) {
           <h3 className="project-h-title">{project.name}</h3>
           <p className="project-h-desc">{project.description.slice(0, 105)}…</p>
           <div className="project-h-footer">
-            <div className="project-h-tags">
-              {project.stack.slice(0, 2).map((tag) => (
-                <span key={tag} className="project-h-tag">{tag}</span>
-              ))}
+              <a href={project.docs || '#'} data-cursor="OPEN" className="inline-flex items-center gap-2 border border-[var(--card-accent)] px-3 py-2 text-[0.6rem] uppercase tracking-[0.14em] text-[var(--card-accent)] transition-all duration-200 hover:bg-[var(--card-accent)] hover:text-black" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+                View Docs <ArrowRight size={12} />
+              </a>
+              <a href={project.live || '#'} target="_blank" rel="noopener noreferrer" data-cursor="OPEN"
+                className="group inline-flex items-center justify-center overflow-hidden border border-[var(--card-accent)] text-[var(--card-accent)] transition-all duration-300 hover:bg-[var(--card-accent)] hover:text-black"
+                style={{ width: '2rem', height: '2rem', transition: 'width 0.35s cubic-bezier(0.34,1.56,0.64,1), background 0.2s ease, color 0.2s ease' }}
+                onMouseEnter={e => e.currentTarget.style.width = '7.5rem'}
+                onMouseLeave={e => e.currentTarget.style.width = '2rem'}
+              >
+                <span className="hidden group-hover:inline-block whitespace-nowrap pr-2 text-[0.6rem] uppercase tracking-[0.14em]" style={{ fontFamily: 'Montserrat, sans-serif' }}>Live Demo</span>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M2.5 11.5L11.5 2.5M11.5 2.5H5.5M11.5 2.5V8.5"/></svg>
+              </a>
             </div>
-            <a href="#" className="project-h-cta" data-cursor="OPEN">
-              <ArrowRight size={15} />
-            </a>
-          </div>
         </div>
       </div>
     </article>
