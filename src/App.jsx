@@ -17,23 +17,46 @@ const scrollToHash = (id) => {
 
 function Preloader() {
   const root = useRef(null);
-  const name = 'Nitesh';
+  const name = owner.name;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       const shell = document.querySelector('.site-shell');
+      const heroTitle = document.querySelector('.hero-title');
+      const heroPortrait = document.querySelector('.hero-portrait');
+      const heroCopy = document.querySelector('.hero-copy');
+      const heroNote = document.querySelector('.hero-note');
 
+      // ── Initial hidden states ────────────────────────────────────────
       gsap.set('.loader-char', { yPercent: 110, opacity: 0, rotateX: -45 });
+      gsap.set(shell, { autoAlpha: 1 });
+      gsap.set([heroTitle, heroPortrait, heroCopy, heroNote], {
+        y: 60,
+        autoAlpha: 0,
+        filter: 'blur(10px)',
+        scale: 0.98,
+        transformOrigin: 'center bottom',
+      });
 
+      // ── Preloader timeline (curtain split) ───────────────────────────
       const tl = gsap.timeline({ defaults: { ease: 'power4.inOut' } });
 
-      tl.to(
-        '.loader-kicker',
-        { y: 0, opacity: 1, duration: 0.42, ease: 'power3.out' }
-      )
+      tl.to('.loader-kicker', {
+        y: 0,
+        opacity: 1,
+        duration: 0.42,
+        ease: 'power3.out',
+      })
         .to(
           '.loader-char',
-          { yPercent: 0, opacity: 1, rotateX: 0, duration: 0.72, stagger: 0.035, ease: 'power4.out' },
+          {
+            yPercent: 0,
+            opacity: 1,
+            rotateX: 0,
+            duration: 0.72,
+            stagger: 0.035,
+            ease: 'power4.out',
+          },
           '-=0.08'
         )
         .fromTo(
@@ -42,23 +65,71 @@ function Preloader() {
           { scaleX: 1, duration: 0.52, ease: 'power3.out' },
           '-=0.28'
         )
-        .to('.loader-name-wrap', { y: -54, opacity: 0, duration: 0.52, ease: 'power3.inOut' }, '+=0.28')
-        .fromTo(
-          shell,
-          { y: 120, scale: 0.985, opacity: 0 },
-          { y: 0, scale: 1, opacity: 1, duration: 0.95, ease: 'power4.out' },
-          '-=0.08'
-        )
-        .set(shell, { clearProps: 'transform' })
-        .to('.curtain-top', { yPercent: -100, duration: 0.62 }, '-=0.05')
-        .to('.curtain-bottom', { yPercent: 100, duration: 0.62 }, '<')
+        .to('.loader-name-wrap', { y: -54, opacity: 0, duration: 0.48, ease: 'power3.inOut' }, '+=0.28')
+        .to('.curtain-top', { yPercent: -100, duration: 0.82, ease: 'power4.inOut' }, '-=0.05')
+        .to('.curtain-bottom', { yPercent: 100, duration: 0.82, ease: 'power4.inOut' }, '<')
         .set(root.current, { pointerEvents: 'none' })
-        .to(root.current, { autoAlpha: 0, duration: 0.1 })
-        .fromTo(
-          gsap.utils.toArray('.hero-reveal'),
-          { y: 60, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.9, stagger: 0.08, ease: 'power3.out' },
-          '-=0.28'
+        .to(root.current, { autoAlpha: 0, duration: 0.1, ease: 'power2.out' })
+
+        // ── Hero reveals (individual pieces) ───────────────────────────
+        .to(
+          heroTitle,
+          {
+            y: 0,
+            autoAlpha: 1,
+            scale: 1,
+            filter: 'blur(0px)',
+            duration: 1.0,
+            ease: 'expo.inOut',
+          },
+          '-=0.15'
+        )
+        .to(
+          heroPortrait,
+          {
+            y: 0,
+            autoAlpha: 1,
+            scale: 1,
+            filter: 'blur(0px)',
+            duration: 1.1,
+            ease: 'elastic.out(1, 0.3)',   // subtle bounce
+          },
+          '-=0.8'
+        )
+        .to(
+          heroCopy,
+          {
+            y: 0,
+            autoAlpha: 1,
+            filter: 'blur(0px)',
+            duration: 0.9,
+            ease: 'expo.inOut',
+          },
+          '-=0.85'
+        )
+        .to(
+          heroNote,
+          {
+            y: 0,
+            autoAlpha: 1,
+            filter: 'blur(0px)',
+            duration: 0.9,
+            ease: 'expo.inOut',
+          },
+          '-=0.8'
+        )
+
+        // ── Add continuous floating animation to the portrait ────────
+        .to(
+          heroPortrait,
+          {
+            y: -10,
+            duration: 3.2,
+            repeat: -1,
+            yoyo: true,
+            ease: 'sine.inOut',
+          },
+          '+=0.5'
         );
     }, root);
 
@@ -69,19 +140,19 @@ function Preloader() {
     <div ref={root} className="preloader fixed inset-0 z-[100] bg-ink">
       <div className="curtain-top absolute left-0 top-0 h-1/2 w-full bg-ink" />
       <div className="curtain-bottom absolute bottom-0 left-0 h-1/2 w-full bg-ink" />
-      <div className="loader-name-wrap absolute inset-0 z-10 grid place-items-center px-5 text-center">
-        <div>
-          <p className="loader-kicker mb-5 font-mono text-[0.68rem] uppercase tracking-[0.42em] text-lime md:text-xs">
+      <div className="loader-name-wrap absolute inset-0 z-10 grid place-items-center px-4 sm:px-6 md:px-8 text-center overflow-hidden">
+        <div className="w-full max-w-full">
+          <p className="loader-kicker mb-3 sm:mb-5 font-mono text-[0.58rem] sm:text-[0.68rem] md:text-xs uppercase tracking-[0.35em] sm:tracking-[0.42em] text-lime">
             Portfolio
           </p>
-          <h1 className="loader-name font-display text-[clamp(3.2rem,12vw,12rem)] font-bold uppercase leading-[0.82] text-white">
+          <h1 className="loader-name font-display text-[clamp(2.2rem,10vw,12rem)] sm:text-[clamp(3rem,11vw,12rem)] md:text-[clamp(3.2rem,12vw,12rem)] font-bold uppercase leading-[0.82] text-white break-words">
             {name.split('').map((char, index) => (
               <span className="loader-char inline-block" key={`${char}-${index}`}>
                 {char === ' ' ? '\u00A0' : char}
               </span>
             ))}
           </h1>
-          <div className="loader-line mx-auto mt-7 h-px w-[min(22rem,72vw)] bg-lime" />
+          <div className="loader-line mx-auto mt-4 sm:mt-5 md:mt-7 h-px w-[min(16rem,85vw)] sm:w-[min(20rem,80vw)] md:w-[min(22rem,72vw)] bg-lime" />
         </div>
       </div>
     </div>
@@ -622,6 +693,13 @@ function Footer() {
 
 export default function App() {
   useEffect(() => {
+
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+
+    window.scrollTo(0, 0);
+
     const lenis = new Lenis({ duration: 1.2, smoothWheel: true });
     const lenisRaf = (time) => lenis.raf(time * 1000);
 

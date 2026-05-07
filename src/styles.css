@@ -963,82 +963,108 @@ a {
 }
 
 @media (max-width: 760px) {
-  .hero-section { padding-top: 9.5rem; }
-
-  .hero-poster {
-    display: grid;
-    min-height: 0;
-    gap: 1rem;
-    border-radius: 24px;
-    padding: 1rem;
+  .hero-section {
+    padding-top: 5rem;
   }
 
-  .hero-poster::before { font-size: 4rem; line-height: 0.9; }
-
-  .hero-title,
-  .hero-portrait,
-  .hero-copy,
-  .hero-note {
+  .hero-poster {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     position: relative;
-    inset: auto;
-    width: auto;
-    max-width: none;
-    transform: none;
+    min-height: 0;
+    border-radius: 36px;
+    border: 4px solid #10200d;
+    padding: 2.5rem 1rem 2.5rem;
+    gap: 0; /* Remove gap to control overlap via margin */
+    background: linear-gradient(160deg, #ecff7d 0%, #c8ff00 52%, #aee900 100%);
   }
 
   .hero-title {
-    font-size: clamp(3.2rem, 15vw, 6.5rem);
-    line-height: 0.82;
-    padding: 0.25rem 0.5rem 0;
-    flex-direction: column;
-    gap: 0;
-    justify-content: flex-start;
-    pointer-events: auto;
-    user-select: auto;
-  }
-
-  .hero-title span { display: block; font-size: 42px; }
-  .hero-portrait { justify-self: center; width: min(22rem, 88%); margin-top: -2.25rem; }
-  .hero-copy { display: grid; gap: 0.75rem; }
-  .hero-status-inline { justify-self: start; }
-  .hero-note { justify-items: start; text-align: left; }
-
-  /* ── Mobile: revert to vertical grid for projects ── */
-  .projects-section {
-    height: auto;
-    min-height: unset;
-    overflow: visible;
-  }
-
-  .projects-pin {
     position: relative;
-    top: auto;
-    height: auto;
+    z-index: 1;
     display: block;
-    overflow: visible;
-    padding-top: clamp(5rem, 10vw, 9rem);
-    padding-bottom: clamp(4rem, 8vw, 7rem);
+    width: 100%;
+    font-size: clamp(2.5rem, 14.5vw, 6.5rem); /* Let it scale fluidly */
+    line-height: 0.85;
+    text-align: center;
+    white-space: nowrap;
+    padding: 0;
+    margin: 0;
+    color: #10200d;
   }
 
-  .projects-viewport {
-    display: block;
-    overflow: visible;
-    margin-top: clamp(2rem, 6vw, 3.5rem);
+  /* Hide the decorative background text */
+  .hero-poster::before,
+  .hero-grid {
+    display: none;
   }
 
-  .projects-track {
-    display: grid;
-    grid-template-columns: 1fr;
-    width: auto;
-    min-width: 0;
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
+  /* Overlap the portrait slightly with the text */
+  .hero-portrait {
+    position: relative;
+    z-index: 2;
+    width: 75%; /* Make the portrait larger to match mockup */
+    max-width: 260px;
+    margin: -1.5rem 13.5rem 1.5rem -0.8rem; 
     transform: none !important;
   }
 
-  .project-h-card {
-    flex: unset;
+  .hero-copy {
+    position: static;
     width: 100%;
+    max-width: 24rem;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  /* Re-style the badge to match the rectangular block in the mockup */
+  .hero-status-inline {
+    margin: 0 auto;
+    justify-content: center;
+    width: 100%;
+    max-width: 280px;
+    border: none;
+    border-top: 1px solid rgba(16, 32, 13, 0.15);
+    border-bottom: 1px solid rgba(16, 32, 13, 0.15);
+    background: rgba(16, 32, 13, 0.04);
+    padding: 0.75rem 0.5rem;
+    border-radius: 0; /* Flat edges */
+  }
+
+  .hero-copy p {
+    font-size: 1.05rem; /* Better readability */
+    font-weight: 600;
+    line-height: 1.4;
+    color: #10200d;
+    padding: 0 1rem;
+    margin: 0;
+  }
+
+  .hero-socials {
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  .hero-socials a {
+    width: 44px;
+    height: 44px; /* Ensure perfect circles */
+    min-height: 44px;
+  }
+
+  .hero-copy::before,
+  .hero-copy::after {
+    display: none;
+  }
+
+  /* Hide the secondary note group to keep it clean like the mockup */
+  .hero-note {
+    display: none; 
   }
 }
 
@@ -1047,8 +1073,10 @@ a {
   .brand-mark { width: 40px; height: 40px; }
   .brand-copy span { font-size: 0.78rem; }
   .brand-copy small, .nav-cta span { display: none; }
-  .hero-title { font-size: 3.4rem; }
-  .hero-copy p, .hero-note p { font-size: 0.84rem; }
+  
+  /* The font-size: 40px override was completely removed from here so clamp() works */
+  
+  .hero-copy p { font-size: 0.95rem; } /* Slightly scale down text on ultra-small screens */
   .marquee { font-size: 2rem; }
   .stat { padding: 0.75rem; }
   .stat-value { font-size: 1.55rem; }
