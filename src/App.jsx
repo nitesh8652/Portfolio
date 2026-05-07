@@ -3,7 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { ArrowDown, ArrowRight, Check, Github, Linkedin, Mail, Menu, Send, X } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { owner, projects, skillGroups, skills } from './data/portfolio';
 
@@ -222,18 +222,14 @@ function Hero() {
       <div className="hero-poster hero-reveal mx-auto max-w-7xl">
         <div className="hero-grid" aria-hidden="true" />
 
-        {/* Giant editorial title — spans full width, sits behind the portrait */}
-        <h1 className="hero-title" aria-label="Code Master">
-          {/* <span>Web</span> */}
+        <h1 className="hero-title" aria-label="Developer">
           <span>Devloper</span>
         </h1>
 
-        {/* Portrait — centred, overlaps the title at z-index 2 */}
         <div className="hero-portrait">
           <img src="/assets/nobg.png" alt="Nitesh Salian" />
         </div>
 
-        {/* Bottom-left: availability pill + short description + social icons */}
         <div className="hero-copy">
           <p className="hero-status-inline">
             <span className="hero-status-dot" />
@@ -250,7 +246,6 @@ function Hero() {
           </div>
         </div>
 
-        {/* Bottom-right: tagline + scroll-down arrow */}
         <div className="hero-note">
           <p>
             Immerse yourself in full-stack solutions where every commit tells a story — from polished React UIs to powerful Node.js APIs.
@@ -336,26 +331,10 @@ function Skills() {
 }
 
 const PROJECT_PALETTES = [
-  {
-    bg: 'linear-gradient(160deg,#0d1b2a 0%,#0a3d2e 55%,#1a6b4a 100%)',
-    accent: '#34d399',
-    pattern: 'radial',
-  },
-  {
-    bg: 'linear-gradient(140deg,#10002b 0%,#240046 50%,#3c096c 100%)',
-    accent: '#c77dff',
-    pattern: 'grid',
-  },
-  {
-    bg: 'linear-gradient(155deg,#03071e 0%,#370617 50%,#6a040f 100%)',
-    accent: '#f48c06',
-    pattern: 'dots',
-  },
-  {
-    bg: 'linear-gradient(145deg,#001219 0%,#005f73 55%,#0a9396 100%)',
-    accent: '#94d2bd',
-    pattern: 'lines',
-  },
+  { bg: 'linear-gradient(160deg,#0d1b2a 0%,#0a3d2e 55%,#1a6b4a 100%)', accent: '#34d399', pattern: 'radial' },
+  { bg: 'linear-gradient(140deg,#10002b 0%,#240046 50%,#3c096c 100%)', accent: '#c77dff', pattern: 'grid' },
+  { bg: 'linear-gradient(155deg,#03071e 0%,#370617 50%,#6a040f 100%)', accent: '#f48c06', pattern: 'dots' },
+  { bg: 'linear-gradient(145deg,#001219 0%,#005f73 55%,#0a9396 100%)', accent: '#94d2bd', pattern: 'lines' },
 ];
 
 function ProjectCard({ project, index }) {
@@ -365,16 +344,11 @@ function ProjectCard({ project, index }) {
     <article
       className="project-h-card"
       data-cursor="VIEW"
-      style={{
-        '--card-bg': palette.bg,
-        '--card-accent': palette.accent,
-      }}
+      style={{ '--card-bg': palette.bg, '--card-accent': palette.accent }}
     >
-      {/* ── Visual background ── */}
       <div className="project-h-visual">
         <div className="project-h-visual-bg" />
 
-        {/* Decorative pattern overlay */}
         {palette.pattern === 'radial' && (
           <svg className="project-h-pattern" viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice">
             {[1, 2, 3, 4, 5].map((i) => (
@@ -414,17 +388,14 @@ function ProjectCard({ project, index }) {
           </svg>
         )}
 
-        {/* Floating number */}
         <span className="project-h-num">{project.number}</span>
       </div>
 
-      {/* ── Content overlay (slides up on active) ── */}
       <div className="project-h-overlay">
         <div className="project-h-overlay-inner">
           <p className="project-h-tagline">{project.tagline}</p>
           <h3 className="project-h-title">{project.name}</h3>
           <p className="project-h-desc">{project.description.slice(0, 105)}…</p>
-
           <div className="project-h-footer">
             <div className="project-h-tags">
               {project.stack.slice(0, 2).map((tag) => (
@@ -442,24 +413,78 @@ function ProjectCard({ project, index }) {
 }
 
 function Projects() {
+  const sectionRef = useRef(null);
+  const trackRef = useRef(null);
+
+  useLayoutEffect(() => {
+    const section = sectionRef.current;
+    const track = trackRef.current;
+    if (!section || !track) return;
+
+    const mm = gsap.matchMedia();
+
+    mm.add('(min-width: 761px)', () => {
+      const getScrollDist = () => Math.max(0, track.scrollWidth - window.innerWidth);
+      const setScrollSpace = () => {
+        section.style.setProperty('--projects-scroll-distance', `${getScrollDist()}px`);
+      };
+
+      setScrollSpace();
+
+      const tween = gsap.to(track, {
+        x: () => -getScrollDist(),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top top',
+          end: () => `+=${getScrollDist()}`,
+          scrub: 1,
+          invalidateOnRefresh: true,
+          onRefreshInit: setScrollSpace,
+          onRefresh: setScrollSpace,
+        },
+      });
+
+      const resizeObserver = new ResizeObserver(() => ScrollTrigger.refresh());
+      resizeObserver.observe(section);
+      resizeObserver.observe(track);
+
+      const refreshFrame = requestAnimationFrame(() => ScrollTrigger.refresh());
+
+      return () => {
+        cancelAnimationFrame(refreshFrame);
+        resizeObserver.disconnect();
+        tween.scrollTrigger?.kill();
+        tween.kill();
+        gsap.set(track, { clearProps: 'transform' });
+        section.style.removeProperty('--projects-scroll-distance');
+      };
+    });
+
+    return () => mm.revert();
+  }, []);
+
   return (
-    <section id="projects" className="section-pad mx-auto max-w-7xl px-5 md:px-8">
-      <SectionTitle eyebrow="03 / Projects" title="My Works" />
-      <p className="mt-4 text-sm leading-relaxed text-muted">
-        Witness the craft behind every line — full-stack builds from polished UIs to powerful APIs.
-      </p>
-      <div className="projects-grid mt-14">
-        {projects.map((project, index) => (
-          <ProjectCard
-            key={`${project.name}-${index}`}
-            project={project}
-            index={index}
-          />
-        ))}
+    <section id="projects" ref={sectionRef} className="projects-section">
+      <div className="projects-pin">
+        <div className="projects-header mx-auto w-full max-w-7xl px-5 md:px-8">
+          <SectionTitle eyebrow="03 / Projects" title="My Works" />
+          <p className="mt-4 text-sm leading-relaxed text-muted">
+            Witness the craft behind every line — full-stack builds from polished UIs to powerful APIs.
+          </p>
+        </div>
+        <div className="projects-viewport">
+          <div className="projects-track" ref={trackRef}>
+            {projects.map((project, index) => (
+              <ProjectCard key={`${project.name}-${index}`} project={project} index={index} />
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
 }
+
 function Contact() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
   const [status, setStatus] = useState('idle');
@@ -522,64 +547,35 @@ function Contact() {
 function Footer() {
   return (
     <footer className="relative overflow-hidden border-t border-white/10 bg-black px-5 py-12 md:px-8">
-
-      {/* Background Glow */}
       <div className="absolute left-1/2 top-0 h-72 w-72 -translate-x-1/2 rounded-full bg-lime/10 blur-3xl"></div>
-
       <div className="relative mx-auto max-w-7xl">
-
-        {/* Top Section */}
         <div className="grid gap-10 md:grid-cols-3 md:items-center">
-
-          {/* Brand */}
           <div>
-            <h2 className="text-2xl font-bold tracking-tight text-white">
-              {owner.name}
-            </h2>
-
+            <h2 className="text-2xl font-bold tracking-tight text-white">{owner.name}</h2>
           </div>
-
-          {/* Navigation */}
           <div className="flex flex-wrap justify-start gap-4 md:justify-center">
             {navItems.map((item) => (
-              <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                className="group relative text-sm text-muted transition-colors duration-300 hover:text-lime"
-              >
+              <a key={item} href={`#${item.toLowerCase()}`} className="group relative text-sm text-muted transition-colors duration-300 hover:text-lime">
                 {item}
-
-                {/* underline animation */}
                 <span className="absolute -bottom-1 left-0 h-[1px] w-0 bg-lime transition-all duration-300 group-hover:w-full"></span>
               </a>
             ))}
           </div>
-
-          {/* Socials */}
           <div className="flex gap-4 md:justify-end">
             {[
               { name: "GitHub", link: owner.github },
               { name: "LinkedIn", link: owner.linkedin },
               { name: "Email", link: `mailto:${owner.email}` },
             ].map((social) => (
-              <a
-                key={social.name}
-                href={social.link}
-                className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-lime hover:bg-lime hover:text-black"
-              >
+              <a key={social.name} href={social.link} className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-lime hover:bg-lime hover:text-black">
                 {social.name}
               </a>
             ))}
           </div>
         </div>
-
-        {/* Bottom */}
         <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 text-xs uppercase tracking-[0.2em] text-muted md:flex-row">
           <p>© 2026 {owner.name}. All rights reserved.</p>
-
-          <p className="font-mono text-[11px] text-white/50">
-            Designed, Developed & Engineer  with passion.
-          </p>
+          <p className="font-mono text-[11px] text-white/50">Designed, Developed & Engineered with passion.</p>
         </div>
       </div>
     </footer>
@@ -589,8 +585,6 @@ function Footer() {
 export default function App() {
   useEffect(() => {
     const lenis = new Lenis({ duration: 1.2, smoothWheel: true });
-
-    // Named function so we can properly remove it later
     const lenisRaf = (time) => lenis.raf(time * 1000);
 
     lenis.on('scroll', ScrollTrigger.update);
@@ -599,21 +593,38 @@ export default function App() {
 
     ScrollTrigger.refresh();
 
-    // GSAP scroll animations
+    // ── Char reveal ──────────────────────────────────────────────────────────
     if (document.querySelectorAll('.char').length) {
       gsap.from('.char', { yPercent: 100, opacity: 0, stagger: 0.018, duration: 0.8, ease: 'power3.out', delay: 2 });
     }
+
+    // ── Section headings clip-reveal ─────────────────────────────────────────
     gsap.utils.toArray('.section-heading').forEach((heading) => {
-      gsap.fromTo(heading, { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 1, ease: 'power4.out', scrollTrigger: { trigger: heading, start: 'top 78%' } });
+      gsap.fromTo(
+        heading,
+        { clipPath: 'inset(0 100% 0 0)' },
+        { clipPath: 'inset(0 0% 0 0)', duration: 1, ease: 'power4.out', scrollTrigger: { trigger: heading, start: 'top 78%' } }
+      );
     });
-    gsap.utils.toArray('.reveal-lines p, .skill-panel, .project-h-card, .about-card').forEach((item) => {
-      gsap.fromTo(item, { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.85, ease: 'power3.out', scrollTrigger: { trigger: item, start: 'top 82%' } });
+
+    // ── General scroll-reveal ─────────────────────────────────────────────
+    const isMobile = window.matchMedia('(max-width: 760px)').matches;
+    const revealTargets = isMobile
+      ? '.reveal-lines p, .skill-panel, .project-h-card, .about-card'
+      : '.reveal-lines p, .skill-panel, .about-card';
+
+    gsap.utils.toArray(revealTargets).forEach((item) => {
+      gsap.fromTo(
+        item,
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.85, ease: 'power3.out', scrollTrigger: { trigger: item, start: 'top 82%' } }
+      );
     });
+
     gsap.utils.toArray('.skill-tag').forEach((tag, index) => {
       gsap.fromTo(tag, { y: 20, opacity: 0 }, { y: 0, opacity: 1, delay: (index % 4) * 0.04, scrollTrigger: { trigger: tag, start: 'top 92%' } });
     });
 
-    // Single cleanup at the end
     return () => {
       gsap.ticker.remove(lenisRaf);
       lenis.destroy();
