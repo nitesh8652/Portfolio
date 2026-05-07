@@ -729,19 +729,18 @@ a {
 
    ─────────────────────────────────────────────────────────────────────────────
 */
+/* =============================================
+   PROJECTS — GSAP pinning (no sticky)
+   ============================================= */
 
-/* Pinned outer shell -------------------------------------------------------- */
 .projects-section {
-  --projects-scroll-distance: 0px;
-  height: calc(100vh + var(--projects-scroll-distance));
-  min-height: 100vh;
-  overflow: visible;
+  /* Let GSAP’s pinning handle the height via pinSpacing */
   position: relative;
+  overscroll-behavior: contain;
 }
 
 .projects-pin {
-  position: sticky;
-  top: 0;
+  /* This is now pinned by GSAP, so no sticky needed */
   height: 100vh;
   overflow: hidden;
   display: grid;
@@ -749,34 +748,32 @@ a {
   gap: clamp(1.5rem, 3vh, 2.5rem);
   padding-top: clamp(4.5rem, 8vh, 6.75rem);
   padding-bottom: clamp(1.5rem, 4vh, 3rem);
+  background: #0a0a0a;
 }
 
-/* Header stays at the top of the pinned frame ------------------------------ */
 .projects-header {
   position: relative;
   z-index: 2;
+  flex-shrink: 0;
 }
 
 .projects-viewport {
   min-height: 0;
   display: flex;
   align-items: center;
-  overflow: visible;
+  overflow: hidden;      /* keep horizontal overflow hidden */
+  position: relative;
 }
 
-/* Horizontal strip --------------------------------------------------------- */
 .projects-track {
   display: flex;
   flex-wrap: nowrap;
   gap: clamp(1.25rem, 2.5vw, 2rem);
-  /* Left padding so first card aligns with section header */
   padding-left: clamp(1.25rem, 4vw, 4rem);
-  /* Right padding gives breathing room after last card */
   padding-right: clamp(1.25rem, 4vw, 4rem);
-  /* Prevent flex from collapsing card widths */
   width: max-content;
   min-width: 100vw;
-  will-change: transform;             /* GPU compositing hint for GSAP */
+  will-change: transform;
 }
 
 /* Individual card ---------------------------------------------------------- */

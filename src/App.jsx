@@ -24,14 +24,12 @@ function Preloader() {
       const shell = document.querySelector('.site-shell');
       const tl = gsap.timeline({ defaults: { ease: 'power4.inOut' } });
 
-      tl.fromTo(
+      tl.to(
         '.loader-kicker',
-        { y: 18, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.42, ease: 'power3.out' }
       )
-        .fromTo(
+        .to(
           '.loader-char',
-          { yPercent: 110, opacity: 0, rotateX: -45 },
           { yPercent: 0, opacity: 1, rotateX: 0, duration: 0.72, stagger: 0.035, ease: 'power4.out' },
           '-=0.08'
         )
@@ -48,6 +46,7 @@ function Preloader() {
           { y: 0, scale: 1, opacity: 1, duration: 0.95, ease: 'power4.out' },
           '-=0.08'
         )
+        .set(shell, { clearProps: 'transform' })
         .to('.curtain-top', { yPercent: -100, duration: 0.62 }, '-=0.05')
         .to('.curtain-bottom', { yPercent: 100, duration: 0.62 }, '<')
         .set(root.current, { pointerEvents: 'none' })
@@ -414,50 +413,74 @@ function ProjectCard({ project, index }) {
 
 function Projects() {
   const sectionRef = useRef(null);
+  const pinRef = useRef(null);      // the element we want to pin
   const trackRef = useRef(null);
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
+    const pin = pinRef.current;
     const track = trackRef.current;
-    if (!section || !track) return;
+    if (!section || !pin || !track) return;
 
     const mm = gsap.matchMedia();
 
     mm.add('(min-width: 761px)', () => {
-      const getScrollDist = () => Math.max(0, track.scrollWidth - window.innerWidth);
-      const setScrollSpace = () => {
-        section.style.setProperty('--projects-scroll-distance', `${getScrollDist()}px`);
+      const getScrollDist = () => {
+        const cards = track.querySelectorAll('.project-h-card');
+        const lastCard = cards[cards.length - 1];
+        const lastCardRight = lastCard
+          ? lastCard.offsetLeft + lastCard.offsetWidth
+          : track.scrollWidth;
+        // Subtract the viewport width (we want to scroll until the last card is fully visible)
+        return Math.max(0, lastCardRight - window.innerWidth);
       };
 
-      setScrollSpace();
+      let scrollDist = 0;
 
       const tween = gsap.to(track, {
-        x: () => -getScrollDist(),
+        x: () => -scrollDist,
         ease: 'none',
         scrollTrigger: {
           trigger: section,
           start: 'top top',
-          end: () => `+=${getScrollDist()}`,
-          scrub: 1,
+          end: () => `+=${scrollDist}`,
+          scrub: true,
+          pin: pin,                    // ← THIS is the key change
+          pinSpacing: true,
           invalidateOnRefresh: true,
-          onRefreshInit: setScrollSpace,
-          onRefresh: setScrollSpace,
+          onRefresh(self) {
+            // Recalculate the distance so the trigger length is always correct
+            scrollDist = getScrollDist();
+            self.vars.end = () => `+=${scrollDist}`;
+          },
+          onRefreshInit(self) {
+            scrollDist = getScrollDist();
+            self.vars.end = () => `+=${scrollDist}`;
+          },
         },
       });
 
-      const resizeObserver = new ResizeObserver(() => ScrollTrigger.refresh());
-      resizeObserver.observe(section);
+      // Keep the distance accurate when content changes
+      const resizeObserver = new ResizeObserver(() => {
+        scrollDist = getScrollDist();
+        ScrollTrigger.refresh();
+      });
       resizeObserver.observe(track);
+      resizeObserver.observe(pin);
 
-      const refreshFrame = requestAnimationFrame(() => ScrollTrigger.refresh());
+      const onLoad = () => {
+        scrollDist = getScrollDist();
+        ScrollTrigger.refresh();
+      };
+      window.addEventListener('load', onLoad);
+      document.fonts?.ready.then(onLoad);
 
       return () => {
-        cancelAnimationFrame(refreshFrame);
         resizeObserver.disconnect();
+        window.removeEventListener('load', onLoad);
         tween.scrollTrigger?.kill();
         tween.kill();
         gsap.set(track, { clearProps: 'transform' });
-        section.style.removeProperty('--projects-scroll-distance');
       };
     });
 
@@ -466,7 +489,7 @@ function Projects() {
 
   return (
     <section id="projects" ref={sectionRef} className="projects-section">
-      <div className="projects-pin">
+      <div className="projects-pin" ref={pinRef}>
         <div className="projects-header mx-auto w-full max-w-7xl px-5 md:px-8">
           <SectionTitle eyebrow="03 / Projects" title="My Works" />
           <p className="mt-4 text-sm leading-relaxed text-muted">
@@ -476,7 +499,11 @@ function Projects() {
         <div className="projects-viewport">
           <div className="projects-track" ref={trackRef}>
             {projects.map((project, index) => (
-              <ProjectCard key={`${project.name}-${index}`} project={project} index={index} />
+              <ProjectCard
+                key={`${project.name}-${index}`}
+                project={project}
+                index={index}
+              />
             ))}
           </div>
         </div>
