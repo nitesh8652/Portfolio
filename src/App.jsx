@@ -17,11 +17,14 @@ const scrollToHash = (id) => {
 
 function Preloader() {
   const root = useRef(null);
-  const name = 'Nitesh Salian';
+  const name = 'Nitesh';
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       const shell = document.querySelector('.site-shell');
+
+      gsap.set('.loader-char', { yPercent: 110, opacity: 0, rotateX: -45 });
+
       const tl = gsap.timeline({ defaults: { ease: 'power4.inOut' } });
 
       tl.to(
@@ -71,7 +74,7 @@ function Preloader() {
           <p className="loader-kicker mb-5 font-mono text-[0.68rem] uppercase tracking-[0.42em] text-lime md:text-xs">
             Portfolio
           </p>
-          <h1 className="loader-name overflow-hidden font-display text-[clamp(3.2rem,12vw,12rem)] font-bold uppercase leading-[0.82] text-white">
+          <h1 className="loader-name font-display text-[clamp(3.2rem,12vw,12rem)] font-bold uppercase leading-[0.82] text-white">
             {name.split('').map((char, index) => (
               <span className="loader-char inline-block" key={`${char}-${index}`}>
                 {char === ' ' ? '\u00A0' : char}
@@ -249,9 +252,17 @@ function Hero() {
           <p>
             Immerse yourself in full-stack solutions where every commit tells a story — from polished React UIs to powerful Node.js APIs.
           </p>
-          <button onClick={() => scrollToHash('#projects')} aria-label="View projects" data-cursor="VIEW">
+          <a
+            href="/assets/resume.pdf"
+            download
+            aria-label="Download Resume"
+            data-cursor="OPEN"
+            className="inline-flex rounded-[6px] items-center gap-2 border border-[#10200d] bg-[#10200d] px-4 py-2 text-[0.68rem] uppercase tracking-[0.18em] text-lime transition-all duration-200 hover:bg-transparent hover:text-[#10200d]"
+            style={{ fontFamily: 'Montserrat, sans-serif' }}
+          >
+           View Resume
             <ArrowDown size={18} />
-          </button>
+          </a>
         </div>
       </div>
     </section>
@@ -270,14 +281,14 @@ function About() {
       </div>
       <div className="about-card border border-line bg-surface p-6 md:p-8">
         <div className="space-y-6">
-          <Info label="Education" value="B.Sc. IT - Currently Pursuing" />
-          <Info label="Focus" value="Web Development · DSA · Database Systems" />
+          <Info label="Education" value={<>B.Sc. IT<br />Information Technology</>} />
+          <Info label="Focus" value="Web Development · Scalable Systems · DSA  " />
         </div>
         <div className="mt-10 grid grid-cols-3 gap-3">
           {[
-            ['4', 'Projects'],
-            ['1+', 'Year'],
-            ['MERN', 'Stack']
+            ['4+', 'live Projects'],
+            ['1+', 'Years practice'],
+            ['2+', 'Happy Clients']
           ].map(([value, label]) => (
             <div key={label} className="stat border border-line bg-ink p-4">
               <strong className="stat-value block font-display text-3xl text-lime">{value}</strong>
@@ -644,7 +655,7 @@ export default function App() {
       gsap.fromTo(
         item,
         { y: 50, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.85, ease: 'power3.out', scrollTrigger: { trigger: item, start: 'top 82%' } }
+        { y: 0, opacity: 1, duration: 0.85, ease: 'power3.out', scrollTrigger: { trigger: item, start: 'top 95%' } }
       );
     });
 

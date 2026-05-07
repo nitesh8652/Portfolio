@@ -17,15 +17,16 @@ export const skills = [
   'Cloudinary',
   'REST APIs',
   'JWT',
-  'Postman'
+  'Postman',
+  
 ];
 
 export const skillGroups = [
-  { title: 'Frontend', items: ['React.js (Vite)', 'HTML5 / CSS3', 'Tailwind CSS', 'Responsive UI'] },
+  { title: 'Frontend', items: ['React.js', 'HTML5 / CSS3', 'Tailwind CSS', 'Responsive UI'] },
   { title: 'Backend', items: ['Node.js', 'Express.js', 'REST APIs', 'JWT Auth'] },
-  { title: 'Database & Cloud', items: ['MongoDB Atlas', 'Mongoose', 'Supabase', 'Cloudinary'] },
-  { title: 'Languages', items: ['JavaScript', 'Java (DSA)'] },
-  { title: 'Tools', items: ['Git & GitHub', 'Postman', 'Render', 'VS Code'] }
+  { title: 'Database & Cloud', items: ['MongoDB Atlas', 'SQL', 'Supabase', 'Cloudinary'] },
+  { title: 'Languages', items: ['JavaScript', 'Python'] },
+  { title: 'Tools', items: ['Git & GitHub', 'Postman', 'Render', 'Senitry', 'Cloudinary', 'Clerk','VS Code'] }
 ];
 
 export const projects = [
