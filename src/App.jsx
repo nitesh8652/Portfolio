@@ -9,7 +9,7 @@ import { owner, projects, skillGroups, skills } from './data/portfolio';
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-const navItems = ['About', 'Skills', 'Projects', 'Contact'];
+const navItems = ['About', 'Skills', 'Projects'];
 
 const scrollToHash = (id) => {
   document.querySelector(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
