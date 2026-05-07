@@ -317,6 +317,18 @@ function Hero() {
             <a href={owner.linkedin} aria-label="LinkedIn" data-cursor="OPEN"><Linkedin size={16} /></a>
             <a href={`mailto:${owner.email}`} aria-label="Email" data-cursor="OPEN"><Mail size={16} /></a>
           </div>
+          <a
+            href="https://drive.google.com/drive/folders/1tvTiMg2DFBJjozIStG96HZYp9-FK8O3n?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Download Resume"
+            data-cursor="OPEN"
+            className="hero-mobile-resume inline-flex items-center gap-2 border border-[#10200d] bg-[#10200d] px-5 py-3 text-[0.68rem] uppercase tracking-[0.18em] text-lime transition-all duration-200"
+            style={{ fontFamily: 'Montserrat, sans-serif' }}
+          >
+            <ArrowDown size={14} />
+            Download Resume
+          </a>
         </div>
 
         <div className="hero-note">
@@ -324,8 +336,9 @@ function Hero() {
             Immerse yourself in full-stack solutions where every commit tells a story — from polished React UIs to powerful Node.js APIs.
           </p>
           <a
-            href="/assets/resume.pdf"
-            download
+            href="https://drive.google.com/drive/folders/1tvTiMg2DFBJjozIStG96HZYp9-FK8O3n?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
             aria-label="Download Resume"
             data-cursor="OPEN"
             className="inline-flex rounded-[6px] items-center gap-2 border border-[#10200d] bg-[#10200d] px-4 py-2 text-[0.68rem] uppercase tracking-[0.18em] text-lime transition-all duration-200 hover:bg-transparent hover:text-[#10200d]"
@@ -347,7 +360,7 @@ function About() {
         <SectionTitle eyebrow="01 / About" title="Who I Am" />
         <div className="reveal-lines mt-10 space-y-6 text-xl leading-relaxed text-muted">
           <p>I'm a B.Sc. IT student and aspiring full-stack developer focused on building scalable web applications using the MERN stack. I work with React on the frontend and Node.js + Express on the backend.</p>
-          <p>I'm drawn to practical, user-focused products: productivity tools, job platforms, and real-time systems. Outside of building, I sharpen my problem-solving through Data Structures & Algorithms in Java.</p>
+          <p>I'm drawn to practical, user-focused products: productivity tools, job platforms, and real-time systems. Outside of building, I sharpen my problem-solving through Data Structures & Algorithms.</p>
         </div>
       </div>
       <div className="about-card border border-line bg-surface p-6 md:p-8">
@@ -355,6 +368,17 @@ function About() {
           <Info label="Education" value={<>B.Sc. IT<br />Information Technology</>} />
           <Info label="Focus" value="Web Development · Scalable Systems · DSA  " />
         </div>
+        <a
+          href="https://drive.google.com/drive/folders/1tvTiMg2DFBJjozIStG96HZYp9-FK8O3n?usp=sharing"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-cursor="OPEN"
+          className="mt-8 inline-flex items-center gap-3 border border-lime/40 bg-lime/10 px-5 py-3 text-[0.68rem] uppercase tracking-[0.18em] text-lime transition-all duration-200 hover:bg-lime hover:text-black hover:border-lime"
+          style={{ fontFamily: 'Montserrat, sans-serif' }}
+        >
+          <ArrowDown size={14} />
+          Download Resume
+        </a>
         <div className="mt-10 grid grid-cols-3 gap-3">
           {[
             ['4+', 'live Projects'],
@@ -526,7 +550,7 @@ function Projects() {
 
     const mm = gsap.matchMedia();
 
-    mm.add('(min-width: 761px)', () => {
+    mm.add('(min-width: 0px)', () => {
       const getScrollDist = () => {
         const cards = track.querySelectorAll('.project-h-card');
         const lastCard = cards[cards.length - 1];

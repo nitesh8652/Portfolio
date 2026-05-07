@@ -376,6 +376,10 @@ a {
   transform: translateY(-2px);
 }
 
+.hero-mobile-resume {
+  display: none;
+}
+
 .hero-status,
 .hero-role,
 .hero-actions,
@@ -948,6 +952,13 @@ a {
 @media (pointer: coarse), (max-width: 767px) {
   body, button, a { cursor: auto; }
   .cursor-dot, .cursor-ring { display: none; }
+
+  /* Always show project card overlay on touch / small screens */
+  .project-h-overlay {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    transition: none !important;
+  }
 }
 
 @media (min-width: 1180px) {
@@ -1066,6 +1077,12 @@ a {
   .hero-note {
     display: none; 
   }
+
+  .hero-mobile-resume {
+    display: inline-flex;
+  }
+
+
 }
 
 @media (max-width: 640px) {
