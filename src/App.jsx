@@ -2,7 +2,7 @@ import Lenis from 'lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
-import { ArrowDown, ArrowRight, Check, Github, Linkedin, Mail, Menu, Send, X } from 'lucide-react';
+import { ArrowDown, ArrowRight, Check, GitBranch, Github, GithubIcon, Linkedin, Mail, Menu, Send, X } from 'lucide-react';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { owner, projects, skillGroups, skills } from './data/portfolio';
@@ -519,7 +519,7 @@ function ProjectCard({ project, index }) {
           <p className="project-h-desc">{project.description.slice(0, 105)}…</p>
           <div className="project-h-footer">
               <a href={project.docs || '#'} data-cursor="OPEN" className="inline-flex items-center gap-2 border border-[var(--card-accent)] px-3 py-2 text-[0.6rem] uppercase tracking-[0.14em] text-[var(--card-accent)] transition-all duration-200 hover:bg-[var(--card-accent)] hover:text-black" style={{ fontFamily: 'Montserrat, sans-serif' }}>
-                View Docs <ArrowRight size={12} />
+                View On Github <GithubIcon size={12} />
               </a>
               <a href={project.live || '#'} target="_blank" rel="noopener noreferrer" data-cursor="OPEN"
                 className="group inline-flex items-center justify-center overflow-hidden border border-[var(--card-accent)] text-[var(--card-accent)] transition-all duration-300 hover:bg-[var(--card-accent)] hover:text-black"

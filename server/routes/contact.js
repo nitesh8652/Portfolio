@@ -1,30 +1,9 @@
 import express from 'express';
 import nodemailer from 'nodemailer';
-import Contact from '../models/Contact.js';
 
 const router = express.Router();
 
 const isEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-
-const sendMail = async (payload) => {
-  const { MAIL_HOST, MAIL_PORT, MAIL_USER, MAIL_PASS, MAIL_TO } = process.env;
-  if (!MAIL_HOST || !MAIL_PORT || !MAIL_USER || !MAIL_PASS || !MAIL_TO) return;
-
-  const transporter = nodemailer.createTransport({
-    host: MAIL_HOST,
-    port: Number(MAIL_PORT),
-    secure: Number(MAIL_PORT) === 465,
-    auth: { user: MAIL_USER, pass: MAIL_PASS }
-  });
-
-  await transporter.sendMail({
-    from: `"Portfolio Contact" <${MAIL_USER}>`,
-    to: MAIL_TO,
-    replyTo: payload.email,
-    subject: `Portfolio: ${payload.subject}`,
-    text: `Name: ${payload.name}\nEmail: ${payload.email}\n\n${payload.message}`
-  });
-};
 
 router.post('/', async (req, res) => {
   try {
@@ -44,10 +23,22 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ success: false, message: 'Please enter a valid email.' });
     }
 
-    const contact = await Contact.create(payload);
-    await sendMail(payload);
+    const transporter = nodemailer.createTransport({
+      host: process.env.MAIL_HOST,
+      port: Number(process.env.MAIL_PORT),
+      secure: Number(process.env.MAIL_PORT) === 465,
+      auth: { user: process.env.MAIL_USER, pass: process.env.MAIL_PASS }
+    });
 
-    res.status(201).json({ success: true, message: 'Message sent.', id: contact._id });
+    await transporter.sendMail({
+      from: `"Portfolio Contact" <${process.env.MAIL_USER}>`,
+      to: process.env.MAIL_TO,
+      replyTo: payload.email,
+      subject: `Portfolio: ${payload.subject}`,
+      text: `Name: ${payload.name}\nEmail: ${payload.email}\n\n${payload.message}`
+    });
+
+    res.status(201).json({ success: true, message: 'Message sent.' });
   } catch (error) {
     console.error('Contact submission failed:', error);
     res.status(500).json({ success: false, message: 'Unable to send message right now.' });

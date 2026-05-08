@@ -30,34 +30,17 @@ export const skillGroups = [
 ];
 
 export const projects = [
-  {
+   {
     number: '01',
-    name: 'ClipSync',
-    tagline: 'Media Sharing Platform',
-    year: '2025',
-    image: '/assets/clipsync.png',
-    docs: '#',
-    live: '#',
-    stack: ['React', 'Node.js', 'MongoDB', 'Cloudinary'],
-    description:
-      'A full-stack application for uploading, managing, and sharing media clips with user-based authorization, secure deletion logic, and cloud media storage.',
-    highlights: [
-      'Cloudinary integration for file upload/storage',
-      'User auth with JWT + secure delete permissions',
-      'Deployed backend on Render'
-    ]
-  },
-  {
-    number: '02',
-    name: 'JobEase',
+    name: 'JobEase.',
     tagline: 'Job Portal + Resume Builder',
     year: '2025',
     image: '/assets/jobease.png',
-    docs: '#',
-    live: '#',
+    docs: 'https://github.com/nitesh8652/JobEase',
+    live: 'https://jobease-1.onrender.com/',
     stack: ['React', 'Node.js', 'Express', 'MongoDB', 'Render'],
     description:
-      'A full MERN job portal with dual dashboards for recruiters and job seekers, plus an integrated resume builder.',
+      'Full stack job portal with dual dashboards for recruiters and job seekers, with resume builder.',
     highlights: [
       'Recruiter & Job Seeker dashboards',
       'In-platform resume builder',
@@ -66,13 +49,30 @@ export const projects = [
     ]
   },
   {
+    number: '02',
+    name: 'ClipSync',
+    tagline: 'Media Sharing Platform',
+    year: '2025',
+    image: '/assets/clipsync.png',
+    docs: 'https://github.com/nitesh8652/Clipsync',
+    live: 'https://clipsynco.netlify.app/',
+    stack: ['React', 'Node.js', 'MongoDB', 'Cloudinary'],
+    description:
+      'Full-stack for uploading, managing, and sharing media clips with user-based authorization, secure deletion logic, and cloud media storage.',
+    highlights: [
+      'Cloudinary integration for file upload/storage',
+      'User auth with JWT + secure delete permissions',
+      'Deployed backend on Render'
+    ]
+  },
+  {
   number: '03',
   name: 'Landit.AI',
   tagline: 'AI-Powered Resume & Career Platform',
   year: '2025',
     image: '/assets/landit.png',
-  docs: '#',
-  live: '#',
+  docs: 'https://github.com/nitesh8652/LanditAI',
+  live: 'https://github.com/nitesh8652/LanditAI',
   stack: ['React', 'Node.js', 'Express', 'MongoDB', 'AI Integration'],
   description:
     'An AI-powered resume builder and career platform that helps users create professional resumes, optimize content, and manage job applications with a modern and interactive interface.',
@@ -86,11 +86,12 @@ export const projects = [
 },
   {
     number: '04',
-    name: 'dMN',
-    tagline: 'Productivity & Task Management App',
+    name: 'Hari  Om  Sports',
+    tagline: 'Sports Equiments Store',
     year: '2025',
-    docs: '#',
-    live: '#',
+     image: '/assets/sport.png',
+    docs: 'https://github.com/kadamsamiksha254-dotcom/hosports',
+    live: 'https://demoqa.com/',
     stack: ['React', 'Node.js', 'Supabase', 'Google Auth'],
     description:
       'A productivity app with calendar-based task management, Google authentication, and email reminders with cloud persistence.',
@@ -101,20 +102,23 @@ export const projects = [
       'Cloud-first data persistence'
     ]
   },
-  // {
-  //   number: '05',
-  //   name: 'Tasker',
-  //   tagline: 'Productivity & Task Management App',
-  //   year: '2025',
-  //   stack: ['React', 'Node.js', 'Supabase', 'Google Auth'],
-  //   description:
-  //     'A productivity app with calendar-based task management, Google authentication, and email reminders with cloud persistence.',
-  //   highlights: [
-  //     'Calendar UI with task markers',
-  //     'Google OAuth via Supabase Auth',
-  //     'Email reminders using Supabase Edge Functions',
-  //     'Cloud-first data persistence'
-  //   ]
-  // },
+  {
+    number: '05',
+    name: 'Tasker',
+    tagline: 'Productivity & Task Management App',
+    year: '2025',
+     image: '/assets/task.png',
+    docs: 'https://github.com/nitesh8652/Tasker',
+    live: 'https://taskervlite.netlify.app/',
+    stack: ['React', 'Node.js', 'Supabase', 'Google Auth'],
+    description:
+      'A productivity app with calendar-based task management, Google authentication, and email reminders with cloud persistence.',
+    highlights: [
+      'Calendar UI with task markers',
+      'Google OAuth via Supabase Auth',
+      'Email reminders using Supabase Edge Functions',
+      'Cloud-first data persistence'
+    ]
+  },
 
 ];
