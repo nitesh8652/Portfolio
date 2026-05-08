@@ -656,7 +656,7 @@ function Contact() {
     setStatus('loading');
     setNotice('');
     try {
-      await axios.post('/api/contact', form);
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/contact`, form);
       setStatus('sent');
       setNotice('Message sent.');
       setForm({ name: '', email: '', subject: '', message: '' });
